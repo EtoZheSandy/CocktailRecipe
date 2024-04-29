@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">CocktailRecipe</string>
+    <string name="app_name">Cocktail Recipe</string>
+    <string name="search_hint">Search…</string>
+    <string name="favorit_text">Favourite</string>
 </resources>

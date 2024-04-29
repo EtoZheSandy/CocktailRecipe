@@ -48,10 +48,6 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
     }
     var isLoading by remember { mutableStateOf(true) }
 
-//    Card(
-//        modifier = Modifier.padding(3.dp),
-//        colors = CardDefaults.cardColors(containerColor = White),
-//        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -74,7 +70,7 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
             }
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(0.dp)
+//            modifier = Modifier.padding(bottom = 10.dp)
         )
         {
             AsyncImage(
@@ -90,22 +86,23 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
                 },
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(120.dp)
+//                    .fillMaxWidth()
+                    .size(150.dp)
                     .align(Alignment.CenterHorizontally)
                     .clip(RoundedCornerShape(8.dp))
+                    .padding(bottom = 15.dp)
             )
-            Text(
-                text = cocktail.nameDrink,
-                color = MaterialTheme.colorScheme.onSurface,
-//                fontFamily = FontFamily.SansSerif,
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center,
-//                modifier = Modifier.fillMaxWidth()
-//                    .padding(0.dp),
-                maxLines = 2 // Максимальное количество строк
-            )
-
         }
+        Text(
+            text = cocktail.nameDrink,
+            color = MaterialTheme.colorScheme.onSurface,
+//                fontFamily = FontFamily.SansSerif,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+                .align(Alignment.BottomCenter),
+            maxLines = 1 // Максимальное количество строк
+        )
     }
 }
 

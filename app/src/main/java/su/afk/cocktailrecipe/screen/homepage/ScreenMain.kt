@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,10 +48,7 @@ import su.afk.cocktailrecipe.R
 fun ScreenMain(
     navController: NavController,
     viewModel: HomeListViewModel = hiltViewModel()
-//    coctails: List<CoctailsMainPage>
 ) {
-    val selectInput by remember { mutableStateOf("") }
-
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize()
@@ -67,7 +65,7 @@ fun ScreenMain(
                     .height(50.dp)
             )
             SearchBar(
-                hint = "Поиск...",
+                hint = stringResource(R.string.search_hint),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
@@ -127,7 +125,6 @@ fun DrinkList(
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
-//        columns = GridCells.Adaptive(120.dp),
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp) // content padding
@@ -136,21 +133,6 @@ fun DrinkList(
             LazyItem(cocktail = cocktailList[index], navController = navController)
         }
     }
-
-//    LazyColumn(contentPadding = PaddingValues(16.dp)) {
-//        val itemCount = if (cocktailList.size % 2 == 0) {
-//            cocktailList.size / 2
-//        } else {
-//            cocktailList.size / 2 + 1
-//        }
-//
-//        items(itemCount) {
-//            if (it >= itemCount - 1 && !endReached) {
-//                viewModel.loadCocktailPaginated()
-//            }
-//            DrinkRow(rowIndex = it, entries = cocktailList, navController = navController)
-//        }
-//    }
 
     Box(
         modifier = Modifier.fillMaxSize(),

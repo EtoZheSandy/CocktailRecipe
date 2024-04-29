@@ -1,18 +1,18 @@
 package su.afk.cocktailrecipe.screen.homepage
 
 import android.graphics.Bitmap
-import androidx.compose.ui.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import su.afk.cocktailrecipe.data.models.DrinkListEntry
 import su.afk.cocktailrecipe.data.DrinkRepository
+import su.afk.cocktailrecipe.data.models.DrinkListEntry
 import su.afk.cocktailrecipe.di.Constans.PAGE_SIZE
 import su.afk.cocktailrecipe.util.Resource
 import javax.inject.Inject
@@ -28,7 +28,7 @@ class HomeListViewModel @Inject constructor(
     var cocktailList = mutableStateOf<List<DrinkListEntry>>(listOf()) // наш список коктелей
     var loadError = mutableStateOf("") // для ошибок загрузки
     var isLoading = mutableStateOf(false) // для статуса загрузки
-    var endReached = mutableStateOf(false) // для показа - последняя ли это страница
+//    var endReached = mutableStateOf(false) // для показа - последняя ли это страница
 
     private var cacheCocktailList = listOf<DrinkListEntry>()
     private var isSearchStarting = true
@@ -111,7 +111,7 @@ class HomeListViewModel @Inject constructor(
     //TODO: И кэшировать се эти данные в Room
 
 
-
+    //TODO: Кнопка показать рандомный коктель
 //    private val apiService = RepositoryDrink.
 //    val posts: MutableState<ThecocktaildbModels?> = mutableStateOf(null)
 //    fun getPosts() {
