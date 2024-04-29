@@ -45,7 +45,7 @@ import su.afk.cocktailrecipe.R
 
 
 @Composable
-fun ScreenMain(
+fun ScreenHome(
     navController: NavController,
     viewModel: HomeListViewModel = hiltViewModel()
 ) {

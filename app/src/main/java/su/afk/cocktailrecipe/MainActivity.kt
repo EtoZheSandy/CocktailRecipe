@@ -11,8 +11,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
+import su.afk.cocktailrecipe.navigation.AppNavigation
 import su.afk.cocktailrecipe.screen.detailCoctail.ScreenDetailCocktail
-import su.afk.cocktailrecipe.screen.homepage.ScreenMain
+import su.afk.cocktailrecipe.screen.homepage.ScreenHome
 import su.afk.cocktailrecipe.ui.theme.CocktailRecipeTheme
 
 @AndroidEntryPoint
@@ -24,6 +25,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CocktailRecipeTheme {
+//                AppNavigation()
+
                 // Навигация
                 val navController = rememberNavController()
                 NavHost(
@@ -31,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     startDestination = "cocktail_list_screen"
                 ) {
                     composable("cocktail_list_screen") {
-                        ScreenMain(navController = navController)
+                        ScreenHome(navController = navController)
                     }
 
                     composable("cocktail_detail_screen/{colorDominate}/{idDrink}",
