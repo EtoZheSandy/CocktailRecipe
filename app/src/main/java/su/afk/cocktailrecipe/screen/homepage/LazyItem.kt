@@ -100,8 +100,8 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
 //                fontFamily = FontFamily.SansSerif,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-                    .padding(0.dp),
+//                modifier = Modifier.fillMaxWidth()
+//                    .padding(0.dp),
                 maxLines = 2 // Максимальное количество строк
             )
 

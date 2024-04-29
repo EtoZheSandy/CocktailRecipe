@@ -130,7 +130,7 @@ fun DrinkList(
 //        columns = GridCells.Adaptive(120.dp),
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(16.dp) // content padding
+        contentPadding = PaddingValues(8.dp) // content padding
     ) {
         items(cocktailList.size) { index ->
             LazyItem(cocktail = cocktailList[index], navController = navController)
