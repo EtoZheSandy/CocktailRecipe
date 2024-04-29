@@ -1,6 +1,9 @@
-<img src='./gitDock/one.png' width='100%' >
-<img src='./gitDock/two.png.png' width='100%' >
-<img src='./gitDock/three.png.png' width='100%' >
+<p float="left">
+  <img src="./gitDock/one.png" width="30%" />
+  <img src="./gitDock/two.png" width="30%" /> 
+  <img src="./gitDock/three.png" width="30%" />
+</p>
+
 
 # Coctail Recipe
 
