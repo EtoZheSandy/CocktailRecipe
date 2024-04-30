@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import su.afk.cocktailrecipe.data.models.DrinkListEntry
+import su.afk.cocktailrecipe.navigation.Screens
 
 //@Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -65,7 +66,7 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
             )
             .clickable {
                 navController.navigate(
-                    "cocktail_detail_screen/${dominantColor.toArgb()}/${cocktail.idDrink}"
+                    "${Screens.DetailScreen}/${dominantColor.toArgb()}/${cocktail.idDrink}"
                 )
             }
     ) {
