@@ -90,8 +90,8 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
 //                    .fillMaxWidth()
                     .size(150.dp)
                     .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 14.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .padding(bottom = 15.dp)
             )
         }
         Text(

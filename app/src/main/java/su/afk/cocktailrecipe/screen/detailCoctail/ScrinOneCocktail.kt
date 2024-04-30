@@ -57,7 +57,7 @@ fun ScreenDetailCocktail(
     dominantColor: Color,
     drinkId: String,
     navController: NavController,
-    topPadding: Dp = 80.dp,
+    topPadding: Dp = 70.dp,
     drinkImageSize: Dp = 300.dp,
     viewModel: OneCocktailViewModel = hiltViewModel()
 ) {
@@ -93,7 +93,7 @@ fun ScreenDetailCocktail(
                 .shadow(10.dp, RoundedCornerShape(10.dp))
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colorScheme.surface)
-                .padding(16.dp)
+                .padding(12.dp)
                 .align(Alignment.BottomCenter),
             loadingModifier = Modifier
                 .size(100.dp)
@@ -226,7 +226,7 @@ fun DrinkTypeSection(
 ) {
     Row(
         modifier = Modifier
-            .padding(16.dp),
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -235,13 +235,13 @@ fun DrinkTypeSection(
 //                .weight(1f) // если будет 1 тип то он займет все место, если 2 то они его разделят между собой
                 .padding(horizontal = 8.dp)
                 .clip(CircleShape)
-                .background(Color.Black)
+                .background(MaterialTheme.colorScheme.onSurface)
                 .height(36.dp)
                 .size(180.dp) // размер кнопки типа
         ) {
             Text(
                 text = type.strAlcoholic.capitalize(Locale.ROOT),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.surface,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )

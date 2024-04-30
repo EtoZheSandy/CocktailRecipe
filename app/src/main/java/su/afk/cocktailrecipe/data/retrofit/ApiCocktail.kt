@@ -66,7 +66,7 @@ interface ApiCocktail {
 
     @GET("api/json/v1/1/filter.php")
     suspend fun getMainDrink(
-        @Query("a") name: String = "Alcoholic"
+        @Query("a") name: String
     ): MainCoctails
 
 //    Фильтр по алкоголю

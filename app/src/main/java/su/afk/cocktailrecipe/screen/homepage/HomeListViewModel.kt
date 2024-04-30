@@ -3,6 +3,7 @@ package su.afk.cocktailrecipe.screen.homepage
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import su.afk.cocktailrecipe.data.DrinkRepository
 import su.afk.cocktailrecipe.data.models.DrinkListEntry
+import su.afk.cocktailrecipe.data.models.ThecocktaildbModels
 import su.afk.cocktailrecipe.di.Constans.PAGE_SIZE
 import su.afk.cocktailrecipe.util.Resource
 import javax.inject.Inject
@@ -33,6 +35,7 @@ class HomeListViewModel @Inject constructor(
     private var cacheCocktailList = listOf<DrinkListEntry>()
     private var isSearchStarting = true
 //    var isSearching = mutableStateOf(false)
+//    var randomCocktail = mutableStateOf<ThecocktaildbModels>()
 
     init {
         loadCocktailPaginated()
@@ -88,12 +91,25 @@ class HomeListViewModel @Inject constructor(
                     isLoading.value = false
                 }
                 is Resource.Loading -> {
-
                 }
             }
         }
     }
 
+    fun loadRandomCocktail() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val resultRandom = repository.getDrinkRandom()
+            when(resultRandom) {
+                is Resource.Success -> {
+
+                }
+                is Resource.Error -> {
+                }
+                is Resource.Loading -> {
+                }
+            }
+        }
+    }
 
 
 

@@ -10,12 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,6 +38,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -42,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import su.afk.cocktailrecipe.R
+import su.afk.cocktailrecipe.navigation.Screens
 
 
 @Composable
@@ -53,6 +60,7 @@ fun ScreenHome(
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize()
     ) {
+        Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier,
         ) {
@@ -75,7 +83,30 @@ fun ScreenHome(
             Spacer(modifier = Modifier.height(16.dp))
             DrinkList(navController = navController)
         }
-    }
+
+        // Floating action button
+//        FloatingActionButton(
+//            onClick = {
+//                navController.navigate(
+//                    "${Screens.DetailScreen}/${dominantColor.toArgb()}/${cocktail.idDrink}"
+//                )
+//            },
+//            modifier = Modifier
+//                .padding(16.dp)
+//                .size(46.dp)
+//                .align(Alignment.BottomEnd)
+////                .padding(bottom = 16.dp)
+//        ) {
+//            Icon(
+//                painter = painterResource(R.drawable.random_cube),
+//                contentDescription = "Random",
+//                tint = MaterialTheme.colorScheme.onSurface,
+//                modifier = Modifier
+//                    .background(MaterialTheme.colorScheme.surface)
+//                    .padding(5.dp)
+//            )
+//        }
+    }}
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -24,7 +24,11 @@ class DrinkRepository @Inject constructor(
 
     suspend fun getDrinkHome(limit: Int, offset: Int): Resource<MainCoctails> {
         val response =  try {
-            api.getMainDrink()
+            val alcoholicDrinks = api.getMainDrink(name = "Alcoholic")
+            val nonAlcoholicDrinks = api.getMainDrink(name = "Non_Alcoholic")
+            MainCoctails(
+                drinks = alcoholicDrinks.drinks + nonAlcoholicDrinks.drinks
+            )
         } catch(e: Exception) {
             return Resource.Error(message = "Произошла неизвестная ошибка")
         }
