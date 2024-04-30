@@ -1,5 +1,6 @@
 package su.afk.cocktailrecipe.screen.homepage
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import kotlinx.coroutines.time.delay
 import su.afk.cocktailrecipe.R
 import su.afk.cocktailrecipe.navigation.Screens
 
@@ -56,6 +58,8 @@ fun ScreenHome(
     navController: NavController,
     viewModel: HomeListViewModel = hiltViewModel()
 ) {
+    val randomCocktailId by remember { viewModel.randomCocktailId }
+
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize()
@@ -84,28 +88,29 @@ fun ScreenHome(
             DrinkList(navController = navController)
         }
 
-        // Floating action button
-//        FloatingActionButton(
-//            onClick = {
-//                navController.navigate(
-//                    "${Screens.DetailScreen}/${dominantColor.toArgb()}/${cocktail.idDrink}"
-//                )
-//            },
-//            modifier = Modifier
-//                .padding(16.dp)
-//                .size(46.dp)
-//                .align(Alignment.BottomEnd)
-////                .padding(bottom = 16.dp)
-//        ) {
-//            Icon(
-//                painter = painterResource(R.drawable.random_cube),
-//                contentDescription = "Random",
-//                tint = MaterialTheme.colorScheme.onSurface,
-//                modifier = Modifier
-//                    .background(MaterialTheme.colorScheme.surface)
-//                    .padding(5.dp)
-//            )
-//        }
+//         Floating action button
+        FloatingActionButton(
+            onClick = {
+                viewModel.loadRandomCocktail()
+                navController.navigate(
+                    "${Screens.DetailScreen}/${Color.White.toArgb()}/${randomCocktailId}"
+                )
+            },
+            modifier = Modifier
+                .padding(16.dp)
+                .size(46.dp)
+                .align(Alignment.BottomEnd)
+//                .padding(bottom = 16.dp)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.random_cube),
+                contentDescription = "Random",
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(5.dp)
+            )
+        }
     }}
 }
 
@@ -150,9 +155,7 @@ fun DrinkList(
     navController: NavController,
     viewModel: HomeListViewModel = hiltViewModel()
 ) {
-    val cocktailList by remember {
-        viewModel.cocktailList
-    }
+    val cocktailList by remember { viewModel.cocktailList }
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 

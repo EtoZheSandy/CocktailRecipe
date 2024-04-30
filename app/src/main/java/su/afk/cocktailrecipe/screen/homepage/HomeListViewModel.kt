@@ -3,7 +3,9 @@ package su.afk.cocktailrecipe.screen.homepage
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -35,10 +37,12 @@ class HomeListViewModel @Inject constructor(
     private var cacheCocktailList = listOf<DrinkListEntry>()
     private var isSearchStarting = true
 //    var isSearching = mutableStateOf(false)
-//    var randomCocktail = mutableStateOf<ThecocktaildbModels>()
+    var randomCocktailId = mutableStateOf("1")
+
 
     init {
         loadCocktailPaginated()
+        loadRandomCocktail()
     }
 
     // TODO Добавить поиск по api
@@ -101,9 +105,10 @@ class HomeListViewModel @Inject constructor(
             val resultRandom = repository.getDrinkRandom()
             when(resultRandom) {
                 is Resource.Success -> {
-
+                    randomCocktailId.value = resultRandom.data!!.drinks!!.firstOrNull()!!.idDrink!!
                 }
                 is Resource.Error -> {
+                    randomCocktailId.value = "1"
                 }
                 is Resource.Loading -> {
                 }
