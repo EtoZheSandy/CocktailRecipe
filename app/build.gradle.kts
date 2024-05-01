@@ -13,8 +13,8 @@ android {
         applicationId = "su.afk.cocktailrecipe"
         minSdk = 24
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -59,10 +59,9 @@ dependencies {
 
     // Coroutine Lifecycle Scopes
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-//    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-
-    //Navigation
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    
+    //Navigation
     implementation ("androidx.navigation:navigation-compose:2.7.7")
     implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
@@ -89,11 +88,15 @@ dependencies {
 
     implementation ("androidx.palette:palette-ktx:1.0.0")
 
+    // Room
+    implementation ("androidx.room:room-ktx:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1")
+
     //fragment
-    implementation(libs.androidx.fragment)
+//    implementation(libs.androidx.fragment)
 
     //icons
-    implementation("androidx.compose.material:material-icons-extended:1.6.6")
+//    implementation("androidx.compose.material:material-icons-extended:1.6.6")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

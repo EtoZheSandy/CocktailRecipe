@@ -14,6 +14,7 @@ import androidx.palette.graphics.Palette
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import su.afk.cocktailrecipe.data.DrinkRepository
 import su.afk.cocktailrecipe.data.models.DrinkListEntry
 import su.afk.cocktailrecipe.data.models.ThecocktaildbModels
@@ -103,14 +104,19 @@ class HomeListViewModel @Inject constructor(
     fun loadRandomCocktail() {
         viewModelScope.launch(Dispatchers.IO) {
             val resultRandom = repository.getDrinkRandom()
-            when(resultRandom) {
-                is Resource.Success -> {
-                    randomCocktailId.value = resultRandom.data!!.drinks!!.firstOrNull()!!.idDrink!!
-                }
-                is Resource.Error -> {
-                    randomCocktailId.value = "1"
-                }
-                is Resource.Loading -> {
+            withContext(Dispatchers.Main) {
+                when (resultRandom) {
+                    is Resource.Success -> {
+                        randomCocktailId.value =
+                            resultRandom.data!!.drinks!!.firstOrNull()!!.idDrink!!
+                    }
+
+                    is Resource.Error -> {
+                        randomCocktailId.value = "1"
+                    }
+
+                    is Resource.Loading -> {
+                    }
                 }
             }
         }

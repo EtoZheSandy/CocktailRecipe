@@ -21,12 +21,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,13 +65,21 @@ fun ScreenDetailCocktail(
     navController: NavController,
     topPadding: Dp = 70.dp,
     drinkImageSize: Dp = 300.dp,
-    viewModel: OneCocktailViewModel = hiltViewModel()
+    viewModel: OneCocktailViewModel = hiltViewModel(),
 ) {
     val drinkInfo = produceState<Resource<ThecocktaildbModels>>(
         initialValue = Resource.Loading()
     ) {
         value = viewModel.getDrinkInfo(drinkId)
     }.value
+
+    // запустится после того как информация о drinkInfo изменится,
+    // после делаем проверку на избранное
+    LaunchedEffect(drinkInfo) {
+        if (drinkInfo is Resource.Success) {
+            viewModel.checkFavoriteCocktail(drinkInfo.data!!)
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -79,6 +93,14 @@ fun ScreenDetailCocktail(
                 .fillMaxWidth()
                 .fillMaxHeight(0.2f)
                 .align(Alignment.TopCenter)
+        )
+        DrinkDetailFavoriteSection(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.2f)
+                .align(Alignment.TopCenter),
+            viewModel = viewModel,
+            drinkInfo = drinkInfo.data
         )
         DrinkDetailStateWrapper(
             drinkInfo = drinkInfo,
@@ -163,10 +185,48 @@ fun DrinkDetailTopSection(
 }
 
 @Composable
+fun DrinkDetailFavoriteSection(
+    modifier: Modifier = Modifier,
+    viewModel: OneCocktailViewModel,
+    drinkInfo: ThecocktaildbModels?,
+) {
+    val isFavorite by viewModel.favorite.collectAsState()
+
+    Box(
+        modifier = modifier
+            .background(
+                Brush.verticalGradient(
+                    listOf(
+                        Color.Black,
+                        Color.Transparent
+                    )
+                )
+            ),
+        contentAlignment = Alignment.TopEnd
+    ) {
+        IconButton(
+            onClick = {
+               if(isFavorite) viewModel.deleteCocktail(drinkInfo!!) else viewModel.saveCocktail(drinkInfo!!)
+            },
+            modifier = Modifier
+                .size(36.dp)
+                .offset(x = -16.dp, y = 24.dp)
+        ) {
+            Icon(
+                imageVector = if(isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(36.dp)
+            )
+        }
+    }
+}
+
+@Composable
 fun DrinkDetailStateWrapper(
     drinkInfo: Resource<ThecocktaildbModels>,
     modifier: Modifier = Modifier,
-    loadingModifier: Modifier = Modifier
+    loadingModifier: Modifier = Modifier,
 ) {
     when (drinkInfo) {
         is Resource.Success -> {
@@ -197,7 +257,7 @@ fun DrinkDetailStateWrapper(
 @Composable
 fun DrinkDetailSection(
     drinkInfo: Drink,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -222,7 +282,7 @@ fun DrinkDetailSection(
 
 @Composable
 fun DrinkTypeSection(
-    type: Drink
+    type: Drink,
 ) {
     Row(
         modifier = Modifier
@@ -255,7 +315,7 @@ fun RecipeDrink(
     ingridientsDrink: Drink,
     height: Dp = 280.dp,
     animDuration: Int = 1000,
-    animDelay: Int = 0
+    animDelay: Int = 0,
 ) {
 //    var animationPlayed by remember {
 //        mutableStateOf(false)
@@ -330,7 +390,7 @@ fun RecipeDrink(
 @Composable
 fun OneIngredient(
     strIngredient: Any?,
-    strMeasure: Any?
+    strMeasure: Any?,
 ) {
     Log.d("MyLog", "$strMeasure | $strIngredient")
     Column {
