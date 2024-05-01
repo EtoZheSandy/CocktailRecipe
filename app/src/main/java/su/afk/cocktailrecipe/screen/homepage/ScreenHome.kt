@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -51,6 +52,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.time.delay
 import su.afk.cocktailrecipe.R
 import su.afk.cocktailrecipe.navigation.Screens
+import su.afk.cocktailrecipe.ui.theme.lightGrey
 
 
 @Composable
@@ -93,12 +95,12 @@ fun ScreenHome(
             onClick = {
                 viewModel.loadRandomCocktail()
                 navController.navigate(
-                    "${Screens.DetailScreen}/${Color.White.toArgb()}/${randomCocktailId}"
+                    "${Screens.DetailScreen}/${lightGrey.toArgb()}/${randomCocktailId}"
                 )
             },
             modifier = Modifier
-                .padding(16.dp)
-                .size(46.dp)
+                .padding(14.dp)
+                .size(42.dp)
                 .align(Alignment.BottomEnd)
 //                .padding(bottom = 16.dp)
         ) {
@@ -161,7 +163,8 @@ fun DrinkList(
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp) // content padding
+//    LazyColumn(
+        contentPadding = PaddingValues(8.dp), // content padding
     ) {
         items(cocktailList.size) { index ->
             LazyItem(cocktail = cocktailList[index], navController = navController)
