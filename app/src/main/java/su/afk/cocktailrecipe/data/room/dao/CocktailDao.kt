@@ -21,6 +21,9 @@ interface CocktailDao {
     @Delete
     suspend fun deleteItem(drinkEntity: DrinkEntity)
 
+    @Query("SELECT * FROM drinkentity")
+    fun queryAll(): Flow<List<DrinkEntity>>
+
 }
 //    @Delete
 //    suspend fun deleteItem(notepad: Notepad)

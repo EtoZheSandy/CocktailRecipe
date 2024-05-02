@@ -2,4 +2,6 @@
     <string name="app_name">Cocktail Recipe</string>
     <string name="search_hint">Search…</string>
     <string name="favorit_text">Favourite</string>
+    <string name="favorite_not_item">In favorites, it\'s still empty</string>
+    <string name="new_retry">Retry</string>
 </resources>

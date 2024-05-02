@@ -1,12 +1,13 @@
 package su.afk.cocktailrecipe.data
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import su.afk.cocktailrecipe.data.room.dao.CocktailDao
 import su.afk.cocktailrecipe.data.room.entity.DrinkEntity
 import javax.inject.Inject
 
-class CocktailRepository @Inject constructor(
+class LocalRepository @Inject constructor(
     private val daoCocktail: CocktailDao
 ) {
 
@@ -26,5 +27,10 @@ class CocktailRepository @Inject constructor(
         withContext(Dispatchers.IO) {
             daoCocktail.deleteItem(cocktail)
         }
+    }
+
+    // Flow оповещает ViewModel о том, что данные были изменены
+    fun getAllCocktail(): Flow<List<DrinkEntity>> {
+        return daoCocktail.queryAll()
     }
 }

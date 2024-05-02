@@ -1,4 +1,4 @@
-package su.afk.cocktailrecipe.screen.detailCoctail
+package su.afk.cocktailrecipe.screen.detailScreen
 
 import android.util.Log
 import androidx.compose.foundation.background

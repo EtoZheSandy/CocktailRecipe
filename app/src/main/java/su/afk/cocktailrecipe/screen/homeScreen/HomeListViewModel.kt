@@ -1,11 +1,8 @@
-package su.afk.cocktailrecipe.screen.homepage
+package su.afk.cocktailrecipe.screen.homeScreen
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -17,7 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import su.afk.cocktailrecipe.data.DrinkRepository
 import su.afk.cocktailrecipe.data.models.DrinkListEntry
-import su.afk.cocktailrecipe.data.models.ThecocktaildbModels
 import su.afk.cocktailrecipe.di.Constans.PAGE_SIZE
 import su.afk.cocktailrecipe.util.Resource
 import javax.inject.Inject
@@ -32,7 +28,7 @@ class HomeListViewModel @Inject constructor(
 
     var cocktailList = mutableStateOf<List<DrinkListEntry>>(listOf()) // наш список коктелей
     var loadError = mutableStateOf("") // для ошибок загрузки
-    var isLoading = mutableStateOf(false) // для статуса загрузки
+    var isLoading = mutableStateOf(true) // для статуса загрузки
 //    var endReached = mutableStateOf(false) // для показа - последняя ли это страница
 
     private var cacheCocktailList = listOf<DrinkListEntry>()

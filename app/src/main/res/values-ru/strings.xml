@@ -3,4 +3,6 @@
     <string name="app_name">Рецепты Коктелей</string>
     <string name="search_hint">Найти…</string>
     <string name="favorit_text">Избранное</string>
+    <string name="favorite_not_item">В избранном пока пусто</string>
+    <string name="new_retry">Повторить попытку</string>
 </resources>

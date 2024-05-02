@@ -1,11 +1,11 @@
-package su.afk.cocktailrecipe.screen.detailCoctail
+package su.afk.cocktailrecipe.screen.detailScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import su.afk.cocktailrecipe.data.CocktailRepository
+import su.afk.cocktailrecipe.data.LocalRepository
 import su.afk.cocktailrecipe.data.DrinkRepository
 import su.afk.cocktailrecipe.data.models.ThecocktaildbModels
 import su.afk.cocktailrecipe.data.room.entity.DrinkEntity
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OneCocktailViewModel @Inject constructor(
     private val repository: DrinkRepository,
-    private val cocktailRepository: CocktailRepository,
+    private val cocktailRepository: LocalRepository,
 ) : ViewModel() {
 
     val favorite = MutableStateFlow(false)
