@@ -42,33 +42,62 @@ class HomeListViewModel @Inject constructor(
         loadRandomCocktail()
     }
 
-    // TODO Добавить поиск по api
-    fun searchDrinkList(query: String) {
-        val listToSearch = if (isSearchStarting) {
-            cocktailList.value
-        } else {
-            cacheCocktailList
-        }
-        viewModelScope.launch(Dispatchers.Default) {
-            if(query.isEmpty()) { //если перестали искать и очиситили поле ввода
-                cocktailList.value = cacheCocktailList // если строка поиска пуста или удалена мы возвращаем ее из кэша
-                isSearchStarting = true
-                return@launch
-            }
+    fun searchDrinkName(query: String) {
+        viewModelScope.launch {
+            val result = repository.getDrinkName(query)
+            when(result) {
+                is Resource.Success -> {
+                    val cocktailEntries: List<DrinkListEntry> = result.data!!.drinks!!.map {
+                        DrinkListEntry(nameDrink = it.strDrink, imageUrl = it.strDrinkThumb, idDrink = it.idDrink.toInt())
+                    }
+                    currencyPage + 1
 
-            val results = listToSearch.filter {
-                // поиск по названию с удалением пробелов и регистров
-                it.nameDrink.contains(query.trim(), ignoreCase = true) ||
-                        it.idDrink.toString() == query.trim() // поиск по id
+                    loadError.value = ""
+                    isLoading.value = false
+                    cocktailList.value = cocktailEntries //.shuffled() // рандомим вывод
+                }
+                is Resource.Error -> {
+                    loadError.value = result.message!!
+                    isLoading.value = false
+                }
+                is Resource.Loading -> {
+                }
             }
-            //сработает при первом запуске поиска
-            if(isSearchStarting) {
-                cacheCocktailList = cocktailList.value
-                isSearchStarting = false
-            }
-            cocktailList.value = results
         }
     }
+
+    private suspend fun searchOnline(query: String) {
+
+    }
+
+    private suspend fun searchOffline(query: String) {
+
+    }
+//        val listToSearch = if (isSearchStarting) {
+//            cocktailList.value
+//        } else {
+//            cacheCocktailList
+//        }
+//        viewModelScope.launch(Dispatchers.Default) {
+//            if(query.isEmpty()) { //если перестали искать и очиситили поле ввода
+//                cocktailList.value = cacheCocktailList // если строка поиска пуста или удалена мы возвращаем ее из кэша
+//                isSearchStarting = true
+//                return@launch
+//            }
+//
+//            val results = listToSearch.filter {
+//                // поиск по названию с удалением пробелов и регистров
+//                it.nameDrink.contains(query.trim(), ignoreCase = true) ||
+//                        it.idDrink.toString() == query.trim() // поиск по id
+//            }
+//            //сработает при первом запуске поиска
+//            if(isSearchStarting) {
+//                cacheCocktailList = cocktailList.value
+//                isSearchStarting = false
+//            }
+//            cocktailList.value = results
+//        }
+
 
     fun loadCocktailPaginated() {
         isLoading.value = true

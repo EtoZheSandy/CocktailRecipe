@@ -25,7 +25,7 @@ interface ApiCocktail {
     @GET("images/ingredients/{name}")
     suspend fun gatImgIngridient(
         @Path("name") name: String
-    )
+    ): ThecocktaildbModels
 
     //  Поиск картинке по имени игридиента
     //   https://www.thecocktaildb.com/images/ingredients/vodka.png

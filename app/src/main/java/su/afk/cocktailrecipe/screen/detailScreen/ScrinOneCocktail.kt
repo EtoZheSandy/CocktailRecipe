@@ -424,3 +424,27 @@ fun OneIngredient(
             thickness = 1.dp)
     }
 }
+
+//         Floating action button
+//        FloatingActionButton(
+//            onClick = {
+//                viewModel.loadRandomCocktail()
+//                navController.navigate(
+//                    "${Screens.DetailCocktailScreen}/${lightGrey.toArgb()}/${randomCocktailId}"
+//                )
+//            },
+//            modifier = Modifier
+//                .padding(14.dp)
+//                .size(42.dp)
+//                .align(Alignment.BottomEnd)
+////                .padding(bottom = 16.dp)
+//        ) {
+//            Icon(
+//                painter = painterResource(R.drawable.random_cube),
+//                contentDescription = "Random",
+//                tint = MaterialTheme.colorScheme.onSurface,
+//                modifier = Modifier
+//                    .background(MaterialTheme.colorScheme.surface)
+//                    .padding(5.dp)
+//            )
+//        }

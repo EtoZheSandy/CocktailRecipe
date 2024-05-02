@@ -43,4 +43,22 @@ class DrinkRepository @Inject constructor(
         }
         return Resource.Success(data = response)
     }
+
+    suspend fun getDrinkName(name: String): Resource<ThecocktaildbModels> {
+        val response =  try {
+            api.getNameDrink(name)
+        } catch(e: Exception) {
+            return Resource.Error(message = "Произошла неизвестная ошибка")
+        }
+        return Resource.Success(data = response)
+    }
+
+    suspend fun getIngridient(name: String): Resource<ThecocktaildbModels> {
+        val response =  try {
+            api.getIngridientDrink(name)
+        } catch(e: Exception) {
+            return Resource.Error(message = "Произошла неизвестная ошибка")
+        }
+        return Resource.Success(data = response)
+    }
 }
