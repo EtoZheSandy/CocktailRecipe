@@ -1,6 +1,5 @@
-package su.afk.cocktailrecipe.screen.homepage
+package su.afk.cocktailrecipe.screen.homeScreen
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,12 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import kotlinx.coroutines.time.delay
 import su.afk.cocktailrecipe.R
 import su.afk.cocktailrecipe.navigation.Screens
 import su.afk.cocktailrecipe.ui.theme.lightGrey
@@ -91,29 +86,30 @@ fun ScreenHome(
         }
 
 //         Floating action button
-        FloatingActionButton(
-            onClick = {
-                viewModel.loadRandomCocktail()
-                navController.navigate(
-                    "${Screens.DetailScreen}/${lightGrey.toArgb()}/${randomCocktailId}"
-                )
-            },
-            modifier = Modifier
-                .padding(14.dp)
-                .size(42.dp)
-                .align(Alignment.BottomEnd)
-//                .padding(bottom = 16.dp)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.random_cube),
-                contentDescription = "Random",
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surface)
-                    .padding(5.dp)
-            )
-        }
-    }}
+//        FloatingActionButton(
+//            onClick = {
+//                viewModel.loadRandomCocktail()
+//                navController.navigate(
+//                    "${Screens.DetailCocktailScreen}/${lightGrey.toArgb()}/${randomCocktailId}"
+//                )
+//            },
+//            modifier = Modifier
+//                .padding(14.dp)
+//                .size(42.dp)
+//                .align(Alignment.BottomEnd)
+////                .padding(bottom = 16.dp)
+//        ) {
+//            Icon(
+//                painter = painterResource(R.drawable.random_cube),
+//                contentDescription = "Random",
+//                tint = MaterialTheme.colorScheme.onSurface,
+//                modifier = Modifier
+//                    .background(MaterialTheme.colorScheme.surface)
+//                    .padding(5.dp)
+//            )
+//        }
+    }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -161,6 +157,7 @@ fun DrinkList(
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
 //    LazyColumn(
@@ -176,7 +173,10 @@ fun DrinkList(
         contentAlignment = Center
     ) {
         if (isLoading) {
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+            CircularProgressIndicator(
+                color = Color.White,
+                modifier = Modifier.size(50.dp)
+            )
         }
         if (loadError.isNotEmpty()) {
             RetrySection(error = loadError) {
