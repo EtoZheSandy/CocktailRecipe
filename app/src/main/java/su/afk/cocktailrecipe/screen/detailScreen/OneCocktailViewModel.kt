@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,27 +27,28 @@ class OneCocktailViewModel @Inject constructor(
     val drinkInfo: StateFlow<Resource<ThecocktaildbModels>> = _drinkInfo
 
     suspend fun getDrinkInfo(drinkId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
         val id = if (drinkId == "1") {
             loadRandomCocktail()
         } else {
             drinkId
         }
         _drinkInfo.value = repository.getDrinkDetail(id.toInt())
+        }
     }
 
     fun checkFavoriteCocktail(cocktail: ThecocktaildbModels) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val cocktailId = cocktail.drinks?.firstOrNull()?.idDrink?.toIntOrNull()
             if (cocktailId != null) {
                 val isFavorite = cocktailRepository.checkFavoriteCocktail(cocktailId)
                 favorite.value = isFavorite != null
-                Log.d("TAG favorite.value", "${favorite.value}")
             }
         }
     }
 
     fun saveCocktail(cocktail: ThecocktaildbModels) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             cocktailRepository.saveCocktail(
                 DrinkEntity(
                     id = cocktail.drinks?.firstOrNull()!!.idDrink.toInt(),
@@ -59,7 +61,7 @@ class OneCocktailViewModel @Inject constructor(
     }
 
     fun deleteCocktail(cocktail: ThecocktaildbModels) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             cocktailRepository.deleteCocktail(
                 DrinkEntity(
                     id = cocktail.drinks?.firstOrNull()!!.idDrink.toInt(),

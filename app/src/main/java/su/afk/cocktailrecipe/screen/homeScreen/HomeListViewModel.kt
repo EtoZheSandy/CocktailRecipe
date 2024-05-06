@@ -40,7 +40,7 @@ class HomeListViewModel @Inject constructor(
 
     // Функция поиска по названию
     fun searchDrinkName(query: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
 
             isOnline.collect { isConnected ->
                 if (isConnected) {
@@ -115,7 +115,7 @@ class HomeListViewModel @Inject constructor(
 
     fun loadCocktailPaginated() {
         isLoading.value = true
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = repository.getDrinkHome(PAGE_SIZE, 0 * PAGE_SIZE)
             when (result) {
                 is Resource.Success -> {
