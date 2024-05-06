@@ -21,7 +21,6 @@ class DrinkRepository @Inject constructor(
         return Resource.Success(data = response)
     }
 
-
     suspend fun getDrinkHome(limit: Int, offset: Int): Resource<MainCoctails> {
         val response =  try {
             val alcoholicDrinks = api.getMainDrink(name = "Alcoholic")

@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import su.afk.cocktailrecipe.data.ConnectivityRepository
 import su.afk.cocktailrecipe.data.DrinkRepository
 import su.afk.cocktailrecipe.data.retrofit.ApiCocktail
 import su.afk.cocktailrecipe.data.room.MainDB
@@ -24,6 +25,12 @@ object AppModule {
 //    fun provideRepositoryDrink(api: ApiCocktail) = DrinkRepository(api)
     fun provideRepositoryDrink(api: ApiCocktail): DrinkRepository {
         return DrinkRepository(api)
+    }
+
+    @Singleton
+    @Provides
+    fun provideConnectivityRepository(@ApplicationContext app: Context): ConnectivityRepository {
+        return ConnectivityRepository(context = app)
     }
 
     @Singleton

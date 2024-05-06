@@ -1,12 +1,14 @@
 package su.afk.cocktailrecipe.screen.detailScreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import su.afk.cocktailrecipe.data.LocalRepository
 import su.afk.cocktailrecipe.data.DrinkRepository
+import su.afk.cocktailrecipe.data.LocalRepository
 import su.afk.cocktailrecipe.data.models.ThecocktaildbModels
 import su.afk.cocktailrecipe.data.room.entity.DrinkEntity
 import su.afk.cocktailrecipe.util.Resource
@@ -20,41 +22,73 @@ class OneCocktailViewModel @Inject constructor(
 
     val favorite = MutableStateFlow(false)
 
-    suspend fun getDrinkInfo(drinkId: String) : Resource<ThecocktaildbModels> {
-        return repository.getDrinkDetail(drinkId.toInt())
+    private val _drinkInfo = MutableStateFlow<Resource<ThecocktaildbModels>>(Resource.Loading())
+    val drinkInfo: StateFlow<Resource<ThecocktaildbModels>> = _drinkInfo
+
+    suspend fun getDrinkInfo(drinkId: String) {
+        val id = if (drinkId == "1") {
+            loadRandomCocktail()
+        } else {
+            drinkId
+        }
+        _drinkInfo.value = repository.getDrinkDetail(id.toInt())
     }
 
-    fun checkFavoriteCocktail(cocktail: ThecocktaildbModels){
+    fun checkFavoriteCocktail(cocktail: ThecocktaildbModels) {
         viewModelScope.launch {
             val cocktailId = cocktail.drinks?.firstOrNull()?.idDrink?.toIntOrNull()
             if (cocktailId != null) {
                 val isFavorite = cocktailRepository.checkFavoriteCocktail(cocktailId)
                 favorite.value = isFavorite != null
+                Log.d("TAG favorite.value", "${favorite.value}")
             }
         }
     }
 
-    fun saveCocktail(cocktail: ThecocktaildbModels){
+    fun saveCocktail(cocktail: ThecocktaildbModels) {
         viewModelScope.launch {
             cocktailRepository.saveCocktail(
-                DrinkEntity(id = cocktail.drinks?.firstOrNull()!!.idDrink.toInt(),
+                DrinkEntity(
+                    id = cocktail.drinks?.firstOrNull()!!.idDrink.toInt(),
                     nameDrink = cocktail.drinks?.firstOrNull()!!.strDrink,
-                    urlDrink = cocktail.drinks?.firstOrNull()!!.strDrinkThumb)
+                    urlDrink = cocktail.drinks?.firstOrNull()!!.strDrinkThumb
+                )
             )
             favorite.value = true
         }
     }
 
-    fun deleteCocktail(cocktail: ThecocktaildbModels){
+    fun deleteCocktail(cocktail: ThecocktaildbModels) {
         viewModelScope.launch {
             cocktailRepository.deleteCocktail(
-                DrinkEntity(id = cocktail.drinks?.firstOrNull()!!.idDrink.toInt(),
+                DrinkEntity(
+                    id = cocktail.drinks?.firstOrNull()!!.idDrink.toInt(),
                     nameDrink = cocktail.drinks?.firstOrNull()!!.strDrink,
-                    urlDrink = cocktail.drinks?.firstOrNull()!!.strDrinkThumb)
+                    urlDrink = cocktail.drinks?.firstOrNull()!!.strDrinkThumb
+                )
             )
             favorite.value = false
         }
     }
 
+    private suspend fun loadRandomCocktail(): String {
+        var randomCocktailId = "1"
+
+        val resultRandom = repository.getDrinkRandom()
+        when (resultRandom) {
+            is Resource.Success -> {
+                randomCocktailId =
+                    resultRandom.data!!.drinks!!.firstOrNull()?.idDrink ?: "1"
+            }
+
+            is Resource.Error -> {
+                randomCocktailId = "1"
+            }
+
+            is Resource.Loading -> {
+            }
+        }
+        return randomCocktailId
+    }
 
 }

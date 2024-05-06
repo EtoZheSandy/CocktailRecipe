@@ -1,6 +1,5 @@
 package su.afk.cocktailrecipe.screen.detailScreen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -33,7 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -51,6 +52,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import kotlinx.coroutines.launch
+import su.afk.cocktailrecipe.R
 import su.afk.cocktailrecipe.data.models.Drink
 import su.afk.cocktailrecipe.data.models.ThecocktaildbModels
 import su.afk.cocktailrecipe.util.Resource
@@ -67,19 +70,25 @@ fun ScreenDetailCocktail(
     drinkImageSize: Dp = 300.dp,
     viewModel: OneCocktailViewModel = hiltViewModel(),
 ) {
-    val drinkInfo = produceState<Resource<ThecocktaildbModels>>(
-        initialValue = Resource.Loading()
-    ) {
-        value = viewModel.getDrinkInfo(drinkId)
-    }.value
+//    val drinkInfo = remember {
+//        viewModel.drinkInfo
+//    }
+    val drinkInfo by viewModel.drinkInfo.collectAsState()
 
-    // запустится после того как информация о drinkInfo изменится,
-    // после делаем проверку на избранное
+    // делаем запрос через view model к функции что бы получить ее id
+    LaunchedEffect(drinkId) {
+        viewModel.getDrinkInfo(drinkId)
+    }
+
+    // запустится после того как Flow о drinkInfo изменится и
+    // collectAsState оповестит, после делаем проверку на избранное
     LaunchedEffect(drinkInfo) {
         if (drinkInfo is Resource.Success) {
             viewModel.checkFavoriteCocktail(drinkInfo.data!!)
         }
     }
+
+
 
     Box(
         modifier = Modifier
@@ -100,7 +109,7 @@ fun ScreenDetailCocktail(
                 .fillMaxHeight(0.2f)
                 .align(Alignment.TopCenter),
             viewModel = viewModel,
-            drinkInfo = drinkInfo.data
+            drinkInfo = drinkInfo.data,
         )
         DrinkDetailStateWrapper(
             drinkInfo = drinkInfo,
@@ -117,6 +126,8 @@ fun ScreenDetailCocktail(
                 .background(MaterialTheme.colorScheme.surface)
                 .padding(12.dp)
                 .align(Alignment.BottomCenter),
+            drinkId = drinkId,
+            viewModel = viewModel,
             loadingModifier = Modifier
                 .size(100.dp)
                 .align(Alignment.Center)
@@ -127,7 +138,6 @@ fun ScreenDetailCocktail(
                     bottom = 16.dp
                 )
         )
-
         Box(
             contentAlignment = Alignment.TopCenter,
             modifier = Modifier
@@ -206,14 +216,16 @@ fun DrinkDetailFavoriteSection(
     ) {
         IconButton(
             onClick = {
-               if(isFavorite) viewModel.deleteCocktail(drinkInfo!!) else viewModel.saveCocktail(drinkInfo!!)
+                if (isFavorite) viewModel.deleteCocktail(drinkInfo!!) else viewModel.saveCocktail(
+                    drinkInfo!!
+                )
             },
             modifier = Modifier
                 .size(36.dp)
                 .offset(x = -16.dp, y = 24.dp)
         ) {
             Icon(
-                imageVector = if(isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier.size(36.dp)
@@ -227,7 +239,11 @@ fun DrinkDetailStateWrapper(
     drinkInfo: Resource<ThecocktaildbModels>,
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier,
+    drinkId: String,
+    viewModel: OneCocktailViewModel,
 ) {
+    val coroutineScope = rememberCoroutineScope() // Создаем CoroutineScope
+
     when (drinkInfo) {
         is Resource.Success -> {
             DrinkDetailSection(
@@ -238,11 +254,20 @@ fun DrinkDetailStateWrapper(
         }
 
         is Resource.Error -> {
-            Text(
-                text = drinkInfo.message!!,
-                color = Color.Red,
+            Column(
                 modifier = modifier
-            )
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                RetrySection(
+                    error = drinkInfo.message!!,
+                    onRetry = {
+                        coroutineScope.launch { // Запускаем сопрограмму из CoroutineScope
+                            viewModel.getDrinkInfo(drinkId)
+                        }
+                    }
+                )
+            }
         }
 
         is Resource.Loading -> {
@@ -251,6 +276,7 @@ fun DrinkDetailStateWrapper(
                 modifier = loadingModifier
             )
         }
+
     }
 }
 
@@ -364,7 +390,6 @@ fun RecipeDrink(
 
         // API конечно...
         ingridientsDrink.apply {
-            Log.d("MyLog", "${ingridientsDrink}")
             strIngredient1?.let { OneIngredient(it, strMeasure1) }
             strIngredient2?.let { OneIngredient(it.toString(), strMeasure2) }
             strIngredient3?.let { OneIngredient(it.toString(), strMeasure3) }
@@ -392,7 +417,6 @@ fun OneIngredient(
     strIngredient: Any?,
     strMeasure: Any?,
 ) {
-    Log.d("MyLog", "$strMeasure | $strIngredient")
     Column {
         Row(
             modifier = Modifier
@@ -418,33 +442,33 @@ fun OneIngredient(
                 fontSize = 18.sp
             )
         }
-        Divider(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp, bottom = 10.dp),
-            thickness = 1.dp)
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp, bottom = 10.dp),
+            thickness = 1.dp
+        )
     }
 }
 
-//         Floating action button
-//        FloatingActionButton(
-//            onClick = {
-//                viewModel.loadRandomCocktail()
-//                navController.navigate(
-//                    "${Screens.DetailCocktailScreen}/${lightGrey.toArgb()}/${randomCocktailId}"
-//                )
-//            },
-//            modifier = Modifier
-//                .padding(14.dp)
-//                .size(42.dp)
-//                .align(Alignment.BottomEnd)
-////                .padding(bottom = 16.dp)
-//        ) {
-//            Icon(
-//                painter = painterResource(R.drawable.random_cube),
-//                contentDescription = "Random",
-//                tint = MaterialTheme.colorScheme.onSurface,
-//                modifier = Modifier
-//                    .background(MaterialTheme.colorScheme.surface)
-//                    .padding(5.dp)
-//            )
-//        }
+@Composable
+fun RetrySection(
+    error: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column {
+        Text(
+            text = error,
+            color = Color.Red,
+            fontSize = 18.sp
+        )
+        Spacer(modifier.height(8.dp))
+        Button(
+            onClick = { onRetry() },
+            modifier = modifier.align(alignment = Alignment.CenterHorizontally)
+        ) {
+            Text(text = stringResource(R.string.new_retry))
+        }
+    }
+}

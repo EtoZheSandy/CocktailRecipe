@@ -1,6 +1,7 @@
 package su.afk.cocktailrecipe.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -31,7 +32,7 @@ import su.afk.cocktailrecipe.screen.homeScreen.ScreenHome
 fun AppNavigation(navController: NavHostController) {
     Scaffold(
         bottomBar = {
-            NavigationBar {
+            NavigationBar(modifier = Modifier.height(56.dp)){
                 var selectedItemIndex by rememberSaveable {
                     mutableStateOf(0)
                 }
@@ -51,9 +52,9 @@ fun AppNavigation(navController: NavHostController) {
                             )
                         },
                         alwaysShowLabel = false,
-                        label = {
-                            Text(text = screen.title)
-                        }
+//                        label = {
+//                            Text(text = screen.title)
+//                        }
                     )
 
                 }
@@ -63,14 +64,19 @@ fun AppNavigation(navController: NavHostController) {
         NavHost(
             navController = navController,
             startDestination = Screens.HomeScreen.name,
-            modifier = Modifier
-                .padding(paddingValues)
+            modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = Screens.HomeScreen.name) {
                 ScreenHome(navController = navController)
             }
             composable(route = Screens.FavoritCocktailScreen.name) {
                 ScreenFavorite(navController = navController)
+            }
+            composable(route = Screens.RandomCocktailScreen.name) {
+                ScreenDetailCocktail(
+                    navController = navController,
+                    dominantColor = Color.White,
+                    drinkId = "1")
             }
             composable(route = Screens.DetailCocktailScreen.name + "/{colorDominate}/{idDrink}",
                 arguments = listOf(
