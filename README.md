@@ -26,3 +26,5 @@
 - Dagger - Hilt
 - Retrofit
 - Coil
+- Room
+
