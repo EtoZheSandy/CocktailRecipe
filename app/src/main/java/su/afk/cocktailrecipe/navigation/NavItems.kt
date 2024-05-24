@@ -13,24 +13,28 @@ import su.afk.cocktailrecipe.R
 
 data class NavItems (
     val title: String,
-    val icon: Int,
+    val iconSelected: Int,
+    val iconUnselected: Int,
     val route: String
 )
 
 val BottomNavigationItems = listOf(
     NavItems(
         title = "Home",
-        icon = R.drawable.icon_cocktail,
+        iconSelected  = R.drawable.icon_cocktail,
+        iconUnselected = R.drawable.icon_cocktail,
         route = Screens.HomeScreen.name
     ),
     NavItems(
         title = "Favorite",
-        icon = R.drawable.icon_favorite,
+        iconSelected  = R.drawable.icon_favorite,
+        iconUnselected = R.drawable.icon_favorite,
         route = Screens.FavoritCocktailScreen.name
     ),
     NavItems(
         title = "Random",
-        icon = R.drawable.random_cube,
+        iconSelected  = R.drawable.cube3,
+        iconUnselected = R.drawable.cube3,
         route = Screens.RandomCocktailScreen.name
     ),
 )
