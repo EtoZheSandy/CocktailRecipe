@@ -16,7 +16,7 @@ import su.afk.cocktailrecipe.data.DrinkRepository
 import su.afk.cocktailrecipe.data.models.DrinkListEntry
 import su.afk.cocktailrecipe.di.Constans.PAGE_SIZE
 import su.afk.cocktailrecipe.util.Resource
-import timber.log.Timber
+//import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,10 +44,10 @@ class HomeListViewModel @Inject constructor(
 
             isOnline.collect { isConnected ->
                 if (isConnected) {
-                    Timber.tag("TAG").d("true")
+//                    Timber.tag("TAG").d("true")
                     searchOnline(query)
                 } else {
-                    Timber.tag("TAG").d("false")
+//                    Timber.tag("TAG").d("false")
                     searchOffline(query)
                 }
             }

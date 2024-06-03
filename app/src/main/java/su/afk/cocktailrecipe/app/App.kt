@@ -3,7 +3,7 @@ package su.afk.cocktailrecipe.app
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import su.afk.cocktailrecipe.data.room.MainDB
-import timber.log.Timber
+//import timber.log.Timber
 
 @HiltAndroidApp
 class App : Application() {
@@ -12,6 +12,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Timber.plant(Timber.DebugTree())
+//        Timber.plant(Timber.DebugTree())
     }
 }

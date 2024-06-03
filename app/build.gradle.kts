@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -52,7 +53,7 @@ android {
 }
 
 dependencies {
-    // Coil
+    // Coil images
     implementation ("io.coil-kt:coil:2.6.0")
     implementation ("io.coil-kt:coil-compose:2.6.0")
     implementation ("com.google.accompanist:accompanist-coil:0.7.0")
@@ -66,7 +67,7 @@ dependencies {
     implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     //Timber
-    implementation("com.jakewharton.timber:timber:5.0.1")
+//    implementation("com.jakewharton.timber:timber:5.0.1")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
@@ -92,8 +93,13 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.6.1")
     kapt ("androidx.room:room-compiler:2.6.1")
 
-    //fragment
-//    implementation(libs.androidx.fragment)
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 
     //icons
 //    implementation("androidx.compose.material:material-icons-extended:1.6.6")
