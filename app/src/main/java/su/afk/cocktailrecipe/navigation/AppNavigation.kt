@@ -8,7 +8,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,7 +69,7 @@ fun AppNavigation(navController: NavHostController) {
             composable(route = Screens.HomeScreen.name) {
                 ScreenHome(navController = navController)
             }
-            composable(route = Screens.FavoritCocktailScreen.name) {
+            composable(route = Screens.FavoriteCocktailScreen.name) {
                 ScreenFavorite(navController = navController)
             }
             composable(route = Screens.RandomCocktailScreen.name) {
