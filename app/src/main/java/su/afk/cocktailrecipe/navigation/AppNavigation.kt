@@ -10,7 +10,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -32,11 +32,12 @@ fun AppNavigation(navController: NavHostController) {
     Scaffold(
         bottomBar = {
             NavigationBar(modifier = Modifier.height(56.dp)){
+                // для запоминания состояние выбранного экрана
                 var selectedItemIndex by rememberSaveable {
-                    mutableStateOf(0)
+                    mutableIntStateOf(0)
                 }
 
-                BottomNavigationItems.forEachIndexed { index, screen ->
+                BottomNavigationItemsNew.entries.forEachIndexed { index, screen ->
                     NavigationBarItem(
                         selected = selectedItemIndex == index,
                         onClick = {
@@ -45,22 +46,21 @@ fun AppNavigation(navController: NavHostController) {
                         },
                         icon = {
                             Icon(
-//                                painter = painterResource(id = screen.icon),
-                                painter = painterResource(id = if (selectedItemIndex == index) screen.iconSelected else screen.iconUnselected),
+                                painter = painterResource(id = screen.icon),
+//                                painter = painterResource(id = if (selectedItemIndex == index) screen.iconSelected else screen.iconUnselected),
                                 contentDescription = screen.title,
                                 modifier = Modifier.size(24.dp)
                             )
                         },
                         alwaysShowLabel = false,
-//                        label = {
-//                            Text(text = screen.title)
-//                        }
+//                        label = { Text(text = screen.title) } // текст снизу иконки
                     )
 
                 }
+
             }
         }
-    ) {paddingValues: PaddingValues ->
+    ) { paddingValues: PaddingValues ->
         NavHost(
             navController = navController,
             startDestination = Screens.HomeScreen.name,

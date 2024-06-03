@@ -1,8 +1,8 @@
 package su.afk.cocktailrecipe.navigation
 
-
 import su.afk.cocktailrecipe.R
 
+// более не используется ибо перенес логику в BottomNavigationItemsNew
 data class NavItems (
     val title: String,
     val iconSelected: Int,
