@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.googleGmsGoogleServices)
 }
 
 android {
@@ -59,8 +60,8 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-coil:0.7.0")
 
     // Coroutine Lifecycle Scopes
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.1")
     
     //Navigation
     implementation ("androidx.navigation:navigation-compose:2.7.7")
