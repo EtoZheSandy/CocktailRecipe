@@ -46,7 +46,8 @@ fun AppNavigation(navController: NavHostController) {
                         },
                         icon = {
                             Icon(
-                                painter = painterResource(id = screen.icon),
+//                                painter = painterResource(id = screen.icon),
+                                painter = painterResource(id = if (selectedItemIndex == index) screen.iconSelected else screen.iconUnselected),
                                 contentDescription = screen.title,
                                 modifier = Modifier.size(24.dp)
                             )
