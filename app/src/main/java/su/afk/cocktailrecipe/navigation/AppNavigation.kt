@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -25,10 +26,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import su.afk.cocktailrecipe.screen.detailScreen.ScreenDetailCocktail
 import su.afk.cocktailrecipe.screen.favoriteScreen.ScreenFavorite
+import su.afk.cocktailrecipe.screen.homeScreen.HomeListViewModel
 import su.afk.cocktailrecipe.screen.homeScreen.ScreenHome
 
 @Composable
-fun AppNavigation(navController: NavHostController) {
+fun AppNavigation(navController: NavHostController, viewModel: HomeListViewModel) {
     Scaffold(
         bottomBar = {
             NavigationBar(modifier = Modifier.height(56.dp)){
@@ -67,7 +69,7 @@ fun AppNavigation(navController: NavHostController) {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = Screens.HomeScreen.name) {
-                ScreenHome(navController = navController)
+                ScreenHome(navController = navController, viewModel)
             }
             composable(route = Screens.FavoriteCocktailScreen.name) {
                 ScreenFavorite(navController = navController)

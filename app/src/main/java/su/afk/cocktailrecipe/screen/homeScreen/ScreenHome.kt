@@ -20,16 +20,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -49,7 +47,7 @@ import su.afk.cocktailrecipe.R
 @Composable
 fun ScreenHome(
     navController: NavController,
-    viewModel: HomeListViewModel = hiltViewModel(),
+    viewModel: HomeListViewModel
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
@@ -72,6 +70,7 @@ fun ScreenHome(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
+                    viewModel = viewModel
                 ) {
                     viewModel.searchDrinkName(it)
                 }
@@ -87,20 +86,20 @@ fun ScreenHome(
 fun SearchBar(
     modifier: Modifier = Modifier,
     hint: String = "",
+    viewModel: HomeListViewModel,
     onSearch: (String) -> Unit = {},
 ) {
-    var text by rememberSaveable {
-        mutableStateOf("")
-    }
+    val searchText by viewModel.searchText.collectAsState()
+
     Box(modifier = modifier) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
-                value = text,
+                value = searchText,
                 onValueChange = {
-                    text = it
+                    viewModel.setSearchText(it)
                     onSearch(it)
                 },
                 maxLines = 1,
@@ -112,9 +111,9 @@ fun SearchBar(
                     .background(Color.White, CircleShape)
                     .padding(horizontal = 5.dp, vertical = 0.dp),
                 label = { Text(hint) },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
+                colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color.White,
-                    unfocusedBorderColor = Color.White
+                    unfocusedBorderColor = Color.White,
                 ),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done

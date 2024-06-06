@@ -1,5 +1,6 @@
 package su.afk.cocktailrecipe.screen.homeScreen
 
+//import timber.log.Timber
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -10,13 +11,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import su.afk.cocktailrecipe.data.ConnectivityRepository
 import su.afk.cocktailrecipe.data.DrinkRepository
 import su.afk.cocktailrecipe.data.models.DrinkListEntry
 import su.afk.cocktailrecipe.di.Constans.PAGE_SIZE
 import su.afk.cocktailrecipe.util.Resource
-//import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +26,13 @@ class HomeListViewModel @Inject constructor(
     private val repository: DrinkRepository,
     private val connectivityRepository: ConnectivityRepository,
 ) : ViewModel() {
+
+    private val _searchText = MutableStateFlow("")
+    val searchText: StateFlow<String> get() = _searchText
+
+    fun setSearchText(newText: String) {
+        _searchText.value = newText
+    }
 
     private val isOnline = connectivityRepository.isConnected // проверка на подключение к интернету
 
