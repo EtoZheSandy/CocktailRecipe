@@ -7,9 +7,7 @@ import kotlinx.coroutines.withContext
 import su.afk.cocktailrecipe.data.local.dao.CocktailDao
 import su.afk.cocktailrecipe.data.local.entity.DrinkEntity
 import su.afk.cocktailrecipe.data.mappers.toDrink
-import su.afk.cocktailrecipe.data.mappers.toDrinkFavorite
 import su.afk.cocktailrecipe.domain.model.Drink
-import su.afk.cocktailrecipe.domain.model.DrinkFavorite
 import su.afk.cocktailrecipe.domain.repository.LocalDrink
 import javax.inject.Inject
 

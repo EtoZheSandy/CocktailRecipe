@@ -27,8 +27,7 @@ class HomeListViewModel @Inject constructor(
     fun loadCocktailPaginated() {
         homeState = homeState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getDrinkHome()
-            when (result) {
+            when (val result = repository.getDrinkHome()) {
                 is Resource.Success -> {
                     homeState = homeState.copy(
                         isLoading = false,
@@ -71,7 +70,7 @@ class HomeListViewModel @Inject constructor(
             is Resource.Error -> {
                 homeState = homeState.copy(
                     isLoading = false,
-                    loadErrorMessage = result.message ?: "Неизвестная ошибка"
+                    loadErrorMessage = result.message ?: ERROR_CODE_101.toString()
                 )
             }
             is Resource.Loading -> {
@@ -80,5 +79,8 @@ class HomeListViewModel @Inject constructor(
         }
     }
 
-
+    companion object {
+        const val ERROR_CODE_101 = 101
+        const val ERROR_CODE_102 = 102
+    }
 }

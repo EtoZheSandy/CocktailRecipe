@@ -11,11 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import su.afk.cocktailrecipe.R
 import su.afk.cocktailrecipe.presentation.screen.component.LazyDrinkItem
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel.Companion.ERROR_CODE_101
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel.Companion.ERROR_CODE_102
 
 
 @Composable
@@ -24,6 +28,7 @@ fun HomeDrinkList(
     viewModel: HomeListViewModel = hiltViewModel(),
 ) {
     val state = viewModel.homeState
+    val context = LocalContext.current
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -45,7 +50,15 @@ fun HomeDrinkList(
             )
         }
         if (state.loadErrorMessage.isNotEmpty()) {
-            RetrySection(error = state.loadErrorMessage) {
+            var errorLanguageText = state.loadErrorMessage
+
+            if (state.loadErrorMessage == ERROR_CODE_101.toString()) {
+                errorLanguageText = context.getString(R.string.unknown_error)
+            } else if (state.loadErrorMessage == ERROR_CODE_102.toString()) {
+                errorLanguageText = context.getString(R.string.network_error)
+            }
+
+            RetrySection(error = errorLanguageText) {
                 viewModel.loadCocktailPaginated()
             }
         }

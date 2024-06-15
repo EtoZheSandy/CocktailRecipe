@@ -29,7 +29,6 @@ fun SearchBar(
     viewModel: HomeListViewModel,
     onSearch: (String) -> Unit = {},
 ) {
-//    val searchText by viewModel.searchText.collectAsState()
     val searchText = viewModel.homeState.searchText
 
     Box(modifier = modifier) {

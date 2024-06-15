@@ -16,7 +16,7 @@ class NetworkDrinkRepository @Inject constructor(
         val response =  try {
             api.getRandomDrink()
         } catch(e: Exception) {
-            return Resource.Error(message = "Произошла неизвестная ошибка")
+            return Resource.Error(message = "102")
         }
         return Resource.Success(data = response)
     }
@@ -32,7 +32,7 @@ class NetworkDrinkRepository @Inject constructor(
             // Map the response DTOs to domain models
             combinedDrinks.drinks.map { it.toDrink() }
         } catch(e: Exception) {
-            return Resource.Error(message = "Произошла неизвестная ошибка")
+            return Resource.Error(message = "102")
         }
 
         return Resource.Success(data = response)
@@ -42,7 +42,7 @@ class NetworkDrinkRepository @Inject constructor(
         val response =  try {
             api.getIdDrinkDetail(id)
         } catch(e: Exception) {
-            return Resource.Error(message = "Произошла неизвестная ошибка")
+            return Resource.Error(message = "102")
         }
         return Resource.Success(data = response)
     }
@@ -56,7 +56,7 @@ class NetworkDrinkRepository @Inject constructor(
                     }
                 } ?: emptyList()
         } catch(e: Exception) {
-            return Resource.Error(message = "Произошла неизвестная ошибка")
+            return Resource.Error(message = "102")
         }
         return Resource.Success(data = response)
     }
@@ -65,7 +65,7 @@ class NetworkDrinkRepository @Inject constructor(
         val response =  try {
             api.getIngredientDrink(name)
         } catch(e: Exception) {
-            return Resource.Error(message = "Произошла неизвестная ошибка")
+            return Resource.Error(message = "102")
         }
         return Resource.Success(data = response)
     }

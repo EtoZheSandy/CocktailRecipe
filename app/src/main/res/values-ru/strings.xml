@@ -5,4 +5,6 @@
     <string name="favorit_text">Избранное</string>
     <string name="favorite_not_item">В избранном пока пусто</string>
     <string name="new_retry">Повторить попытку</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="network_error">Ошибка соединения с сервером</string>
 </resources>
