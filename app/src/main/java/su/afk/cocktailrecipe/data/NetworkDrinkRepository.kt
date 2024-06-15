@@ -19,7 +19,7 @@ class NetworkDrinkRepository @Inject constructor(
         return Resource.Success(data = response)
     }
 
-    override suspend fun getDrinkHome(limit: Int, offset: Int): Resource<ListDrinkResponseDto> {
+    override suspend fun getDrinkHome(): Resource<ListDrinkResponseDto> {
         val response =  try {
             val alcoholicDrinks = api.getMainDrink(name = "Alcoholic")
             val nonAlcoholicDrinks = api.getMainDrink(name = "Non_Alcoholic")

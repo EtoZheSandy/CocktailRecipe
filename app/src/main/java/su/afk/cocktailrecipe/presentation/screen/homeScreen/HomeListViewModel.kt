@@ -1,21 +1,15 @@
 package su.afk.cocktailrecipe.presentation.screen.homeScreen
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.palette.graphics.Palette
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import su.afk.cocktailrecipe.data.ConnectivityRepository
 import su.afk.cocktailrecipe.domain.model.DrinkListEntry
-import su.afk.cocktailrecipe.di.Constants.PAGE_SIZE
 import su.afk.cocktailrecipe.domain.repository.NetworkDrink
 import su.afk.cocktailrecipe.util.Resource
 import javax.inject.Inject
@@ -26,36 +20,51 @@ class HomeListViewModel @Inject constructor(
     private val connectivityRepository: ConnectivityRepository,
 ) : ViewModel() {
 
-    private val _searchText = MutableStateFlow("")
-    val searchText: StateFlow<String> get() = _searchText
-
-    fun setSearchText(newText: String) {
-        _searchText.value = newText
-    }
+    var homeState by mutableStateOf(HomeState())
+        private set
 
     private val isOnline = connectivityRepository.isConnected // проверка на подключение к интернету
-
-    var cocktailList = mutableStateOf<List<DrinkListEntry>>(listOf()) // наш список коктелей
-    var loadError = mutableStateOf("") // для ошибок загрузки
-    var isLoading = mutableStateOf(true) // для статуса загрузки
-
-    private var cacheCocktailList = listOf<DrinkListEntry>()
-    private var isSearchStarting = true
 
     init {
         loadCocktailPaginated()
     }
 
-    // Функция поиска по названию
+    fun loadCocktailPaginated() {
+        homeState = homeState.copy(isLoading = true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getDrinkHome()
+            when (result) {
+                is Resource.Success -> {
+                    val cocktailEntries: List<DrinkListEntry> = result.data!!.drinks!!.map {
+                        DrinkListEntry(
+                            nameDrink = it.strDrink,
+                            imageUrl = it.strDrinkThumb,
+                            idDrink = it.idDrink.toInt()
+                        )
+                    }
+                    homeState = homeState.copy(isLoading = false, loadErrorMessage = "",
+                        cocktailList = cocktailEntries.shuffled())
+                }
+                is Resource.Error -> {
+                    homeState = homeState.copy(isLoading = false, loadErrorMessage = result.message!!)
+                }
+                is Resource.Loading -> {
+                }
+            }
+        }
+    }
+
+    fun setSearchText(newText: String) {
+        homeState = homeState.copy(searchText = newText)
+    }
+
     fun searchDrinkName(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
 
             isOnline.collect { isConnected ->
                 if (isConnected) {
-//                    Timber.tag("TAG").d("true")
                     searchOnline(query)
                 } else {
-//                    Timber.tag("TAG").d("false")
                     searchOffline(query)
                 }
             }
@@ -66,9 +75,6 @@ class HomeListViewModel @Inject constructor(
         val result = repository.getDrinkName(query)
         when (result) {
             is Resource.Success -> {
-//                val cocktailEntries: List<DrinkListEntry> = result.data!!.drinks!!.map {
-//                    DrinkListEntry(nameDrink = it.strDrink, imageUrl = it.strDrinkThumb, idDrink = it.idDrink.toInt())
-//                }
                 val cocktailEntries: List<DrinkListEntry> = result.data?.drinks?.map {
                     DrinkListEntry(
                         nameDrink = it.strDrink,
@@ -76,88 +82,43 @@ class HomeListViewModel @Inject constructor(
                         idDrink = it.idDrink.toInt()
                     )
                 } ?: emptyList()
-                loadError.value = ""
-                isLoading.value = false
-                cocktailList.value = cocktailEntries //.shuffled() // рандомим вывод
-            }
 
+                homeState = homeState.copy(isLoading = false, loadErrorMessage = "", cocktailList = cocktailEntries)
+            }
             is Resource.Error -> {
-                loadError.value = result.message!!
-                isLoading.value = false
+                homeState = homeState.copy(isLoading = false, loadErrorMessage = result.message!!)
             }
-
             is Resource.Loading -> {
-                isLoading.value = true
+                homeState = homeState.copy(isLoading = true)
             }
         }
     }
 
-    private suspend fun searchOffline(query: String) {
-        val listToSearch = if (isSearchStarting) {
-            cocktailList.value
+    private var cacheCocktailList = listOf<DrinkListEntry>()
+
+    private fun searchOffline(query: String) {
+        val listToSearch = if (homeState.isSearchStarting) {
+            homeState.cocktailList
         } else {
             cacheCocktailList
         }
         viewModelScope.launch(Dispatchers.Default) {
             if (query.isEmpty()) { //если перестали искать и очиситили поле ввода
-                cocktailList.value =
-                    cacheCocktailList // если строка поиска пуста или удалена мы возвращаем ее из кэша
-                isSearchStarting = true
+                homeState = homeState.copy(cocktailList = cacheCocktailList, isSearchStarting = true) // если строка поиска пуста или удалена мы возвращаем ее из кэша
                 return@launch
             }
 
-            val results = listToSearch.filter {
+            val results = listToSearch?.filter {
                 // поиск по названию с удалением пробелов и регистров
                 it.nameDrink.contains(query.trim(), ignoreCase = true) ||
                         it.idDrink.toString() == query.trim() // поиск по id
             }
             //сработает при первом запуске поиска
-            if (isSearchStarting) {
-                cacheCocktailList = cocktailList.value
-                isSearchStarting = false
+            if (homeState.isSearchStarting) {
+                cacheCocktailList = homeState.cocktailList
+                homeState = homeState.copy(isSearchStarting = false)
             }
-            cocktailList.value = results
-        }
-    }
-
-
-    fun loadCocktailPaginated() {
-        isLoading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getDrinkHome(PAGE_SIZE, 0 * PAGE_SIZE)
-            when (result) {
-                is Resource.Success -> {
-                    val cocktailEntries: List<DrinkListEntry> = result.data!!.drinks!!.map {
-                        DrinkListEntry(
-                            nameDrink = it.strDrink,
-                            imageUrl = it.strDrinkThumb,
-                            idDrink = it.idDrink.toInt()
-                        )
-                    }
-
-                    loadError.value = ""
-                    isLoading.value = false
-                    cocktailList.value += cocktailEntries.shuffled() // рандомим вывод
-                }
-
-                is Resource.Error -> {
-                    loadError.value = result.message!!
-                    isLoading.value = false
-                }
-
-                is Resource.Loading -> {
-                }
-            }
-        }
-    }
-
-    fun calcDominateColor(drawable: Drawable, onFinish: (Color) -> Unit) {
-        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
-
-        Palette.from(bmp).generate { palette ->
-            palette?.dominantSwatch?.rgb?.let { colorValue ->
-                onFinish(Color(colorValue))
-            }
+            homeState = homeState.copy(cocktailList = results!!)
         }
     }
 }

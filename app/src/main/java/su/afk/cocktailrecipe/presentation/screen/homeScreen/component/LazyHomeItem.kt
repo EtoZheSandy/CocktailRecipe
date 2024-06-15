@@ -1,4 +1,4 @@
-package su.afk.cocktailrecipe.presentation.screen.homeScreen
+package su.afk.cocktailrecipe.presentation.screen.homeScreen.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,20 +28,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import su.afk.cocktailrecipe.domain.model.DrinkListEntry
 import su.afk.cocktailrecipe.presentation.navigation.Screens
+import su.afk.cocktailrecipe.util.calcDominateColor
 
 //@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LazyItem(
-    cocktail: DrinkListEntry, // каждый напиток с названием и id
-    navController: NavController, // для навигации по id
-    modifier: Modifier = Modifier, // дефолтный Modifier
-    viewModel: HomeListViewModel = hiltViewModel(), // hilt передаст его за меня
+fun LazyHomeItem(
+    cocktail: DrinkListEntry,
+    navController: NavController,
 ) {
     val defaultDominantColor =
         MaterialTheme.colorScheme.surface //дефф цвет если не успели высчитать для картиники
@@ -83,14 +81,13 @@ fun LazyItem(
                     .build(),
                 contentDescription = cocktail.nameDrink,
                 onSuccess = {
-                    viewModel.calcDominateColor(it.result.drawable) { color ->
+                    calcDominateColor(it.result.drawable) { color ->
                         dominantColor = color
                     }
                     isLoading = false
                 },
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-//                    .fillMaxWidth()
                     .size(150.dp)
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 14.dp)

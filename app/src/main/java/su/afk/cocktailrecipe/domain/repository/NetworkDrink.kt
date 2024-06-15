@@ -7,7 +7,7 @@ interface NetworkDrink {
 
     suspend fun getDrinkRandom(): Resource<ListDrinkResponseDto>
 
-    suspend fun getDrinkHome(limit: Int, offset: Int): Resource<ListDrinkResponseDto>
+    suspend fun getDrinkHome(): Resource<ListDrinkResponseDto>
 
     suspend fun getDrinkDetail(id: Int): Resource<ListDrinkResponseDto>
 
