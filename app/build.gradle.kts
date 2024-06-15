@@ -3,8 +3,9 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
-    alias(libs.plugins.crashlytics)
-    alias(libs.plugins.googleGmsGoogleServices)
+    // для запуска на тестовом устройсте они не нужны
+//    alias(libs.plugins.crashlytics)
+//    alias(libs.plugins.googleGmsGoogleServices)
 }
 
 android {
@@ -60,15 +61,14 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-coil:0.7.0")
 
     // Coroutine Lifecycle Scopes
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
     
     //Navigation
     implementation ("androidx.navigation:navigation-compose:2.7.7")
-    //implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     //Timber
-//    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
@@ -78,32 +78,31 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     //coroutines
-    //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     //Dagger - Hilt
     implementation ("com.google.dagger:hilt-android:2.51.1")
     kapt ("com.google.dagger:hilt-android-compiler:2.51.1")
-    //kapt ("androidx.hilt:hilt-compiler:1.2.0")
     implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
-    //implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
 
-    // для вычисления цвета картинки
+    // Для вычисления цвета картинки
     implementation ("androidx.palette:palette-ktx:1.0.0")
 
     // Room
     implementation ("androidx.room:room-ktx:2.6.1")
     kapt ("androidx.room:room-compiler:2.6.1")
 
+    // для запуска на тестовом устройсте они не нужны
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+//    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
 
     // Add the dependencies for the Crashlytics and Analytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-analytics")
+//    implementation("com.google.firebase:firebase-crashlytics")
+//    implementation("com.google.firebase:firebase-analytics")
 
-    //icons
+
+    // icons
 //    implementation("androidx.compose.material:material-icons-extended:1.6.6")
 
     implementation(libs.androidx.core.ktx)

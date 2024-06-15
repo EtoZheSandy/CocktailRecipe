@@ -10,10 +10,13 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import su.afk.cocktailrecipe.data.ConnectivityRepository
-import su.afk.cocktailrecipe.data.DrinkRepository
-import su.afk.cocktailrecipe.data.retrofit.ApiCocktail
-import su.afk.cocktailrecipe.data.room.MainDB
-import su.afk.cocktailrecipe.di.Constans.BASE_URL
+import su.afk.cocktailrecipe.data.NetworkDrinkRepository
+import su.afk.cocktailrecipe.data.network.service.ApiCocktail
+import su.afk.cocktailrecipe.data.local.MainDB
+import su.afk.cocktailrecipe.data.local.dao.CocktailDao
+import su.afk.cocktailrecipe.di.Constants.BASE_URL
+import su.afk.cocktailrecipe.domain.repository.LocalDrink
+import su.afk.cocktailrecipe.domain.repository.NetworkDrink
 import javax.inject.Singleton
 
 @Module
@@ -22,9 +25,14 @@ object AppModule {
 
     @Singleton
     @Provides
-//    fun provideRepositoryDrink(api: ApiCocktail) = DrinkRepository(api)
-    fun provideRepositoryDrink(api: ApiCocktail): DrinkRepository {
-        return DrinkRepository(api)
+    fun provideNetworkDrinkRepository(api: ApiCocktail): NetworkDrink {
+        return NetworkDrinkRepository(api)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocalDrinkRepository(dao: CocktailDao): LocalDrink {
+        return su.afk.cocktailrecipe.data.LocalDrinkRepository(daoCocktail = dao)
     }
 
     @Singleton
@@ -43,8 +51,7 @@ object AppModule {
             .create(ApiCocktail::class.java)
     }
 
-
-    @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationCompenent (i.e. everywhere in the application)
+    @Singleton
     @Provides
     fun provideDatabase(
         @ApplicationContext app: Context
@@ -52,9 +59,9 @@ object AppModule {
         context = app,
         MainDB::class.java,
         "MyDataBase.db"
-    ).build() // The reason we can construct a database for the repo
+    ).build()
 
     @Singleton
     @Provides
-    fun provideDao(db: MainDB) = db.daoCocktail() // The reason we can implement a Dao for the database
+    fun provideDao(db: MainDB) = db.daoCocktail()
 }
