@@ -31,14 +31,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import su.afk.cocktailrecipe.domain.model.DrinkListEntry
+import su.afk.cocktailrecipe.domain.model.Drink
 import su.afk.cocktailrecipe.presentation.navigation.Screens
 import su.afk.cocktailrecipe.util.calcDominateColor
 
 //@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LazyHomeItem(
-    cocktail: DrinkListEntry,
+    cocktail: Drink,
     navController: NavController,
 ) {
     val defaultDominantColor =
@@ -76,7 +76,7 @@ fun LazyHomeItem(
         {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(cocktail.imageUrl)
+                    .data(cocktail.urlDrink)
                     .crossfade(true)
                     .build(),
                 contentDescription = cocktail.nameDrink,
