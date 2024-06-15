@@ -2,6 +2,7 @@ package su.afk.cocktailrecipe.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import su.afk.cocktailrecipe.data.local.entity.DrinkEntity
+import su.afk.cocktailrecipe.domain.model.Drink
 import su.afk.cocktailrecipe.domain.model.DrinkFavorite
 
 interface LocalDrink {
@@ -12,5 +13,5 @@ interface LocalDrink {
 
     suspend fun deleteCocktail(cocktail: DrinkEntity)
 
-    fun getAllCocktail(): Flow<List<DrinkFavorite>>
+    fun getAllCocktail(): Flow<List<Drink>>
 }

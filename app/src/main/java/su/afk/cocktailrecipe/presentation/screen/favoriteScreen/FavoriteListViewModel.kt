@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import su.afk.cocktailrecipe.domain.model.Drink
 import su.afk.cocktailrecipe.domain.model.DrinkFavorite
 import su.afk.cocktailrecipe.domain.repository.LocalDrink
 import javax.inject.Inject
@@ -18,8 +19,8 @@ class FavoriteListViewModel @Inject constructor(
     private val localRepository: LocalDrink
 ) : ViewModel() {
 
-    private val _favoriteListCocktail = MutableStateFlow<List<DrinkFavorite>>(emptyList())
-    val favoriteListCocktail: StateFlow<List<DrinkFavorite>> = _favoriteListCocktail.asStateFlow()
+    private val _favoriteListCocktail = MutableStateFlow<List<Drink>>(emptyList())
+    val favoriteListCocktail: StateFlow<List<Drink>> = _favoriteListCocktail.asStateFlow()
 
     private fun getAllFavoriteCocktail() = viewModelScope.launch(Dispatchers.IO) {
         localRepository.getAllCocktail().collect { listFavorite ->

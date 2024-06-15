@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import su.afk.cocktailrecipe.R
+import su.afk.cocktailrecipe.presentation.screen.component.LazyDrinkItem
 import su.afk.cocktailrecipe.presentation.screen.favoriteScreen.component.NoItem
 
 
@@ -67,7 +68,7 @@ fun DrinkFavoriteList(
         contentPadding = PaddingValues(8.dp),
     ) {
         items(favoriteCocktailList.size) { index ->
-            LazyFavoriteItem(cocktail = favoriteCocktailList[index], navController = navController)
+            LazyDrinkItem(cocktail = favoriteCocktailList[index], navController = navController)
         }
     }
 }

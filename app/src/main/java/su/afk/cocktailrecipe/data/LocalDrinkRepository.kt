@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import su.afk.cocktailrecipe.data.local.dao.CocktailDao
 import su.afk.cocktailrecipe.data.local.entity.DrinkEntity
+import su.afk.cocktailrecipe.data.mappers.toDrink
 import su.afk.cocktailrecipe.data.mappers.toDrinkFavorite
+import su.afk.cocktailrecipe.domain.model.Drink
 import su.afk.cocktailrecipe.domain.model.DrinkFavorite
 import su.afk.cocktailrecipe.domain.repository.LocalDrink
 import javax.inject.Inject
@@ -33,10 +35,10 @@ class LocalDrinkRepository @Inject constructor(
         }
     }
 
-    override fun getAllCocktail(): Flow<List<DrinkFavorite>> {
+    override fun getAllCocktail(): Flow<List<Drink>> {
         return daoCocktail.queryAllDrink().map { value: List<DrinkEntity> ->
             value.map { drinkEntity ->
-                drinkEntity.toDrinkFavorite()
+                drinkEntity.toDrink()
             }
         }
     }

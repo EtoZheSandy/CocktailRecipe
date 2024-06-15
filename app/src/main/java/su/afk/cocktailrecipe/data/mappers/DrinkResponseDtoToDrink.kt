@@ -5,7 +5,7 @@ import su.afk.cocktailrecipe.domain.model.Drink
 
 fun DrinkResponseDto.toDrink(): Drink {
     return Drink(
-        idDrink = idDrink,
+        idDrink = idDrink.toInt(),
         nameDrink = strDrink,
         urlDrink = strDrinkThumb
     )

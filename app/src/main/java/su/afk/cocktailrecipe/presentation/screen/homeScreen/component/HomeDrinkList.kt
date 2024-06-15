@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import su.afk.cocktailrecipe.presentation.screen.component.LazyDrinkItem
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel
 
 
@@ -29,7 +30,7 @@ fun HomeDrinkList(
         contentPadding = PaddingValues(8.dp), // content padding
     ) {
         items(state.cocktailList.size) { index ->
-            LazyHomeItem(cocktail = state.cocktailList[index], navController = navController)
+            LazyDrinkItem(cocktail = state.cocktailList[index], navController = navController)
         }
     }
 
