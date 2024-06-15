@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,24 +27,25 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import su.afk.cocktailrecipe.domain.model.DrinkFavorite
 import su.afk.cocktailrecipe.domain.model.DrinkListEntry
 import su.afk.cocktailrecipe.presentation.navigation.Screens
+import su.afk.cocktailrecipe.util.calcDominateColor
 
 //@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с названием и id
-             navController: NavController, // для навигации по id
-             modifier: Modifier = Modifier, // дефолтный Modifier
-             viewModel: FavoriteListViewModel = hiltViewModel() // hilt передаст его за меня
+fun LazyFavoriteItem(
+    cocktail: DrinkFavorite,
+    navController: NavController,
 ) {
     val defaultDominantColor =
-        MaterialTheme.colorScheme.surface //дефф цвет если не успели высчитать для картиники
+        MaterialTheme.colorScheme.surface // дефф цвет если не успели высчитать для картиники
 
     var dominantColor by remember {
         mutableStateOf(defaultDominantColor)
@@ -69,7 +69,7 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
             )
             .clickable {
                 navController.navigate(
-                    "${Screens.DetailCocktailScreen}/${dominantColor.toArgb()}/${cocktail.idDrink}"
+                    "${Screens.DetailCocktailScreen}/${dominantColor.toArgb()}/${cocktail.id}"
                 )
             }
     ) {
@@ -79,20 +79,18 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
         {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(cocktail.imageUrl)
+                    .data(cocktail.urlDrink)
                     .crossfade(true)
                     .build(),
                 contentDescription = cocktail.nameDrink,
                 onSuccess = {
-                    viewModel.calcDominateColor(it.result.drawable) { color ->
+                    calcDominateColor(it.result.drawable) { color ->
                         dominantColor = color
                     }
-                    isLoading =
-                        false // Устанавливаем флаг загрузки в false после успешной загрузки изображения
+                    isLoading = false // false после успешной загрузки изображения
                 },
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    //                    .fillMaxWidth()
                     .size(150.dp)
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 14.dp)
@@ -104,10 +102,12 @@ fun LazyItem(cocktail: DrinkListEntry, // каждый напиток с наз�
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .align(BottomCenter),
-            maxLines = 1 // Максимальное количество строк
+            maxLines = 1
         )
+
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Center)
