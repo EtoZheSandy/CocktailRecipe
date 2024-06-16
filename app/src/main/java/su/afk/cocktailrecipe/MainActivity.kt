@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import su.afk.cocktailrecipe.presentation.navigation.AppNavigation
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel
-import su.afk.cocktailrecipe.presentation.ui.theme.CocktailRecipeTheme
+import su.afk.cocktailrecipe.presentation.ui.theme.AppTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CocktailRecipeTheme {
+            AppTheme {
                 val navController = rememberNavController()
                 AppNavigation(navController = navController, viewModel = viewModel)
             }

@@ -88,7 +88,7 @@ fun ScreenDetailCocktail(
                 )
                 .shadow(10.dp, RoundedCornerShape(10.dp))
                 .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.primaryContainer)
                 .padding(12.dp)
                 .align(Alignment.BottomCenter),
             drinkId = drinkId,

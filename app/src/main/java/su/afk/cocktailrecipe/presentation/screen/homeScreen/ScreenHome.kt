@@ -27,7 +27,7 @@ fun ScreenHome(
     viewModel: HomeListViewModel,
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.secondaryContainer,
         modifier = Modifier.fillMaxSize()
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
