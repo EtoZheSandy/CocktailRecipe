@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import su.afk.cocktailrecipe.domain.model.Drink
-import su.afk.cocktailrecipe.domain.model.DrinkFavorite
 import su.afk.cocktailrecipe.domain.repository.LocalDrink
 import javax.inject.Inject
 

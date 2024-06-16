@@ -2,6 +2,7 @@ package su.afk.cocktailrecipe.domain.repository
 
 import su.afk.cocktailrecipe.data.network.dto.ListDrinkResponseDto
 import su.afk.cocktailrecipe.domain.model.Drink
+import su.afk.cocktailrecipe.domain.model.DrinkDetail
 import su.afk.cocktailrecipe.util.Resource
 
 interface NetworkDrink {
@@ -10,7 +11,7 @@ interface NetworkDrink {
 
     suspend fun getDrinkHome(): Resource<List<Drink>>
 
-    suspend fun getDrinkDetail(id: Int): Resource<ListDrinkResponseDto>
+    suspend fun getDrinkDetail(id: Int): Resource<DrinkDetail>
 
     suspend fun getDrinkName(name: String): Resource<List<Drink>>
 

@@ -1,4 +1,4 @@
-package su.afk.cocktailrecipe.presentation.screen.homeScreen.component
+package su.afk.cocktailrecipe.presentation.screen.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

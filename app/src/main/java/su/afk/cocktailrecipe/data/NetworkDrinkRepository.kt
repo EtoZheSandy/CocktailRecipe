@@ -1,10 +1,13 @@
 package su.afk.cocktailrecipe.data
 
 import su.afk.cocktailrecipe.data.mappers.toDrink
+import su.afk.cocktailrecipe.data.mappers.toDrinkDetail
 import su.afk.cocktailrecipe.data.network.dto.ListDrinkResponseDto
 import su.afk.cocktailrecipe.data.network.service.ApiCocktail
 import su.afk.cocktailrecipe.domain.model.Drink
+import su.afk.cocktailrecipe.domain.model.DrinkDetail
 import su.afk.cocktailrecipe.domain.repository.NetworkDrink
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel.Companion.ERROR_CODE_102
 import su.afk.cocktailrecipe.util.Resource
 import javax.inject.Inject
 
@@ -16,7 +19,7 @@ class NetworkDrinkRepository @Inject constructor(
         val response =  try {
             api.getRandomDrink()
         } catch(e: Exception) {
-            return Resource.Error(message = "102")
+            return Resource.Error(message = ERROR_CODE_102.toString())
         }
         return Resource.Success(data = response)
     }
@@ -32,17 +35,19 @@ class NetworkDrinkRepository @Inject constructor(
             // Map the response DTOs to domain models
             combinedDrinks.drinks.map { it.toDrink() }
         } catch(e: Exception) {
-            return Resource.Error(message = "102")
+            return Resource.Error(message = ERROR_CODE_102.toString())
         }
 
         return Resource.Success(data = response)
     }
 
-    override suspend fun getDrinkDetail(id: Int): Resource<ListDrinkResponseDto> {
+    override suspend fun getDrinkDetail(id: Int): Resource<DrinkDetail> {
         val response =  try {
             api.getIdDrinkDetail(id)
+                .drinks.first()
+                .toDrinkDetail()
         } catch(e: Exception) {
-            return Resource.Error(message = "102")
+            return Resource.Error(message = ERROR_CODE_102.toString())
         }
         return Resource.Success(data = response)
     }
@@ -56,7 +61,7 @@ class NetworkDrinkRepository @Inject constructor(
                     }
                 } ?: emptyList()
         } catch(e: Exception) {
-            return Resource.Error(message = "102")
+            return Resource.Error(message = ERROR_CODE_102.toString())
         }
         return Resource.Success(data = response)
     }
@@ -65,7 +70,7 @@ class NetworkDrinkRepository @Inject constructor(
         val response =  try {
             api.getIngredientDrink(name)
         } catch(e: Exception) {
-            return Resource.Error(message = "102")
+            return Resource.Error(message = ERROR_CODE_102.toString())
         }
         return Resource.Success(data = response)
     }

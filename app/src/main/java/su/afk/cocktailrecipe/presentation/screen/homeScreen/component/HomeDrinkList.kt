@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import su.afk.cocktailrecipe.R
 import su.afk.cocktailrecipe.presentation.screen.component.LazyDrinkItem
+import su.afk.cocktailrecipe.presentation.screen.component.RetrySection
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel.Companion.ERROR_CODE_101
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel.Companion.ERROR_CODE_102
