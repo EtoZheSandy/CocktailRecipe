@@ -27,7 +27,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import su.afk.cocktailrecipe.presentation.screen.detailScreen.component.DrinkDetailFavoriteSection
 import su.afk.cocktailrecipe.presentation.screen.detailScreen.component.DrinkDetailStateWrapper
 import su.afk.cocktailrecipe.presentation.screen.detailScreen.component.DrinkDetailTopSection
 import su.afk.cocktailrecipe.util.Resource
@@ -65,14 +64,7 @@ fun ScreenDetailCocktail(
             navController = navController,
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.2f)
-                .align(Alignment.TopCenter)
-        )
-        DrinkDetailFavoriteSection(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.2f)
-                .align(Alignment.TopCenter),
+                .fillMaxHeight(0.2f),
             viewModel = viewModel,
             cocktailDetail = cocktailDetail.data,
         )
