@@ -2,7 +2,17 @@ package su.afk.cocktailrecipe.util
 
 object RegistrationUtil {
 
-    fun registration(username: String, password: String, confirmedPassword: String): Boolean {
+    private val existingUsers = listOf("admin", "123")
+
+    fun registration(
+        username: String,
+        password: String,
+        confirmedPassword: String
+    ): Boolean {
+        if(username.isEmpty() || password.isEmpty()) return false
+        if(username in existingUsers) return false
+        if(password != confirmedPassword) return false
+        if(password.length < 3) return false
         return true
     }
 }
