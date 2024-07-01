@@ -70,6 +70,9 @@ dependencies {
     //Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
 
+    // Truth tests
+    testImplementation("com.google.truth:truth:1.4.2")
+
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
