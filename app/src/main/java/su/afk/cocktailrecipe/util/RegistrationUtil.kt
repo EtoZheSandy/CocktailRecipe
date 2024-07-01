@@ -12,7 +12,7 @@ object RegistrationUtil {
         if(username.isEmpty() || password.isEmpty()) return false
         if(username in existingUsers) return false
         if(password != confirmedPassword) return false
-        if(password.length < 1) return false
+        if(password.length < 0) return false
         return true
     }
 }
