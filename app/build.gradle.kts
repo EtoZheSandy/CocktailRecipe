@@ -56,44 +56,44 @@ android {
 
 dependencies {
     // Coil images
-    implementation ("io.coil-kt:coil:2.6.0")
-    implementation ("io.coil-kt:coil-compose:2.6.0")
-    implementation ("com.google.accompanist:accompanist-coil:0.7.0")
+    implementation (libs.coil)
+    implementation (libs.coil.compose)
+    implementation (libs.accompanist.coil)
 
     // Coroutine Lifecycle Scopes
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
     
     //Navigation
-    implementation ("androidx.navigation:navigation-compose:2.7.7")
+    implementation (libs.androidx.navigation.compose)
 
     //Timber
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation(libs.timber)
 
     // Truth tests
-    testImplementation("com.google.truth:truth:1.4.2")
+    testImplementation(libs.truth)
 
     //Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
+    implementation(libs.gson)
 
     //coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    implementation(libs.kotlinx.coroutines.android)
 
     //Dagger - Hilt
-    implementation ("com.google.dagger:hilt-android:2.51.1")
-    kapt ("com.google.dagger:hilt-android-compiler:2.51.1")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation (libs.hilt.android)
+    kapt (libs.hilt.android.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
 
     // Для вычисления цвета картинки
-    implementation ("androidx.palette:palette-ktx:1.0.0")
+    implementation (libs.androidx.palette.ktx)
 
     // Room
-    implementation ("androidx.room:room-ktx:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
+    implementation (libs.androidx.room.ktx)
+    kapt (libs.androidx.room.compiler)
 
     // для запуска на тестовом устройсте они не нужны
     // Import the BoM for the Firebase platform
