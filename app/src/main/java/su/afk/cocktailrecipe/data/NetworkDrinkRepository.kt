@@ -7,7 +7,7 @@ import su.afk.cocktailrecipe.data.network.service.ApiCocktail
 import su.afk.cocktailrecipe.domain.model.Drink
 import su.afk.cocktailrecipe.domain.model.DrinkDetail
 import su.afk.cocktailrecipe.domain.repository.NetworkDrink
-import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel.Companion.ERROR_CODE_102
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeViewModel.Companion.ERROR_CODE_102
 import su.afk.cocktailrecipe.util.Resource
 import javax.inject.Inject
 

@@ -25,11 +25,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import su.afk.cocktailrecipe.presentation.screen.detailScreen.ScreenDetailCocktail
 import su.afk.cocktailrecipe.presentation.screen.favoriteScreen.ScreenFavorite
-import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeViewModel
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.ScreenHome
 
 @Composable
-fun AppNavigation(navController: NavHostController, viewModel: HomeListViewModel) {
+fun AppNavigation(navController: NavHostController, viewModel: HomeViewModel) {
     Scaffold(
         bottomBar = {
             NavigationBar(modifier = Modifier.height(56.dp)){
@@ -38,12 +38,12 @@ fun AppNavigation(navController: NavHostController, viewModel: HomeListViewModel
                     mutableIntStateOf(0)
                 }
 
-                BottomNavigationItemsNew.entries.forEachIndexed { index, screen ->
+                BottomNavigationItems.entries.forEachIndexed { index, screen ->
                     NavigationBarItem(
                         selected = selectedItemIndex == index,
                         onClick = {
                             selectedItemIndex = index
-                            navController.navigate(screen.route)
+                            navController.navigate(screen.name)
                         },
                         icon = {
                             Icon(
@@ -66,10 +66,19 @@ fun AppNavigation(navController: NavHostController, viewModel: HomeListViewModel
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = Screens.HomeScreen.name) {
-                ScreenHome(navController = navController, viewModel)
+                ScreenHome(
+                    onNavigateToScreen = {
+                        navController.navigate(it)
+                    },
+                    viewModel = viewModel
+                )
             }
             composable(route = Screens.FavoriteCocktailScreen.name) {
-                ScreenFavorite(navController = navController)
+                ScreenFavorite(
+                    onNavigateToScreen = {
+                        navController.navigate(it)
+                    }
+                )
             }
             composable(route = Screens.RandomCocktailScreen.name) {
                 ScreenDetailCocktail(

@@ -28,7 +28,7 @@ import su.afk.cocktailrecipe.presentation.screen.favoriteScreen.component.NoItem
 
 @Composable
 fun ScreenFavorite(
-    navController: NavController,
+    onNavigateToScreen: (String) -> Unit = {},
 ) {
     Surface(
         color = MaterialTheme.colorScheme.secondaryContainer,
@@ -47,17 +47,16 @@ fun ScreenFavorite(
                     .height(50.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            DrinkFavoriteList(navController = navController)
+            DrinkFavoriteList(onNavigateToScreen = onNavigateToScreen)
         }}
     }
 }
 
 @Composable
 fun DrinkFavoriteList(
-    navController: NavController,
+    onNavigateToScreen: (String) -> Unit = {},
     viewModel: FavoriteListViewModel = hiltViewModel()
 ) {
-
     val favoriteCocktailList by viewModel.favoriteListCocktail.collectAsState(initial = emptyList())
 
     if(favoriteCocktailList.isEmpty()) {
@@ -68,7 +67,8 @@ fun DrinkFavoriteList(
         contentPadding = PaddingValues(8.dp),
     ) {
         items(favoriteCocktailList.size) { index ->
-            LazyDrinkItem(cocktail = favoriteCocktailList[index], navController = navController)
+            LazyDrinkItem(cocktail = favoriteCocktailList[index], onNavigateToScreen = onNavigateToScreen)
+//            LazyDrinkItem(cocktail = favoriteCocktailList[index], navController = navController)
         }
     }
 }

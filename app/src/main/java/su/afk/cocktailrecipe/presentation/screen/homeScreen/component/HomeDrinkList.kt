@@ -12,23 +12,27 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import su.afk.cocktailrecipe.R
+import su.afk.cocktailrecipe.presentation.navigation.Screens
 import su.afk.cocktailrecipe.presentation.screen.component.LazyDrinkItem
 import su.afk.cocktailrecipe.presentation.screen.component.RetrySection
-import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel
-import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel.Companion.ERROR_CODE_101
-import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel.Companion.ERROR_CODE_102
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeScreenEvent
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeScreenState
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeViewModel
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeViewModel.Companion.ERROR_CODE_101
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeViewModel.Companion.ERROR_CODE_102
 
 
 @Composable
 fun HomeDrinkList(
-    navController: NavController,
-    viewModel: HomeListViewModel = hiltViewModel(),
+    onNavigateToScreen: (String) -> Unit = {},
+    state: HomeScreenState = HomeScreenState(),
+    onEvent: (HomeScreenEvent) -> Unit = {},
 ) {
-    val state = viewModel.homeState
     val context = LocalContext.current
 
     LazyVerticalGrid(
@@ -36,7 +40,7 @@ fun HomeDrinkList(
         contentPadding = PaddingValues(8.dp), // content padding
     ) {
         items(state.cocktailList.size) { index ->
-            LazyDrinkItem(cocktail = state.cocktailList[index], navController = navController)
+            LazyDrinkItem(cocktail = state.cocktailList[index], onNavigateToScreen = onNavigateToScreen)
         }
     }
 
@@ -60,8 +64,20 @@ fun HomeDrinkList(
             }
 
             RetrySection(error = errorLanguageText) {
-                viewModel.loadCocktailPaginated()
+                onEvent(HomeScreenEvent.Retry)
             }
         }
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun HomeDrinkListPreviewError() {
+    HomeDrinkList(state = HomeScreenState(loadErrorMessage = "Сетевая ошибка"))
+}
+
+@Preview(showSystemUi = true, showBackground = true, backgroundColor = 0xFF00FF00)
+@Composable
+fun HomeDrinkListPreviewLoading() {
+    HomeDrinkList(state = HomeScreenState(isLoading = true))
 }

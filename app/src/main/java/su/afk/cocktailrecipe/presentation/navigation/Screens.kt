@@ -2,21 +2,20 @@ package su.afk.cocktailrecipe.presentation.navigation
 
 import su.afk.cocktailrecipe.R
 
-// Все навигационные маршруты
-enum class Screens {
+
+enum class Screens
+{
     HomeScreen,
     DetailCocktailScreen,
     FavoriteCocktailScreen,
     RandomCocktailScreen
 }
 
-// Для bottom навигации
-enum class BottomNavigationItemsNew(
+enum class BottomNavigationItems(
     val title: String,
-    val icon: Int,
-    val route: String
+    val icon: Int
 ) {
-    HomeScreen("Home", R.drawable.icon_home, Screens.HomeScreen.name),
-    FavoriteCocktailScreen("Favorite", R.drawable.icon_cocktail, Screens.FavoriteCocktailScreen.name),
-    RandomCocktailScreen("Random", R.drawable.cube3, Screens.RandomCocktailScreen.name)
+    HomeScreen("Home", R.drawable.icon_home),
+    FavoriteCocktailScreen("Favorite", R.drawable.icon_cocktail),
+    RandomCocktailScreen("Random", R.drawable.cube3)
 }

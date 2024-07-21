@@ -26,20 +26,19 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import su.afk.cocktailrecipe.domain.model.Drink
 import su.afk.cocktailrecipe.presentation.navigation.Screens
 import su.afk.cocktailrecipe.util.calcDominateColor
 
-//@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LazyDrinkItem(
     cocktail: Drink,
-    navController: NavController,
+    onNavigateToScreen: (String) -> Unit = {},
 ) {
     val defaultDominantColor =
         MaterialTheme.colorScheme.surface //дефф цвет если не успели высчитать для картиники
@@ -65,9 +64,7 @@ fun LazyDrinkItem(
                 )
             )
             .clickable {
-                navController.navigate(
-                    "${Screens.DetailCocktailScreen}/${dominantColor.toArgb()}/${cocktail.idDrink}"
-                )
+                onNavigateToScreen("${Screens.DetailCocktailScreen}/${dominantColor.toArgb()}/${cocktail.idDrink}")
             }
     ) {
         Column(
@@ -110,4 +107,15 @@ fun LazyDrinkItem(
             )
         }
     }
+}
+
+
+@Preview()
+@Composable
+fun LazyDrinkItemPreview() {
+    LazyDrinkItem(cocktail = Drink(
+        idDrink = 1,
+        nameDrink = "Old Fashioned",
+        urlDrink = "https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg")
+    )
 }

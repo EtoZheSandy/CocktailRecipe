@@ -11,26 +11,25 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeListViewModel
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeScreenEvent
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeScreenState
+import su.afk.cocktailrecipe.presentation.screen.homeScreen.HomeViewModel
 
 @Composable()
 fun SearchBar(
     modifier: Modifier = Modifier,
     hint: String = "",
-    viewModel: HomeListViewModel,
-    onSearch: (String) -> Unit = {},
+    onEvent: (HomeScreenEvent) -> Unit,
+    homeState: HomeScreenState,
 ) {
-    val searchText = viewModel.homeState.searchText
-
     Box(modifier = modifier) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -42,10 +41,9 @@ fun SearchBar(
                     .shadow(5.dp, CircleShape)
                     .background(Color.White, CircleShape)
                     .padding(horizontal = 5.dp, vertical = 0.dp),
-                value = searchText,
+                value = homeState.searchInput,
                 onValueChange = {
-                    viewModel.setSearchText(it)
-                    onSearch(it)
+                    onEvent(HomeScreenEvent.Search(it))
                 },
                 maxLines = 1,
                 singleLine = true,
@@ -61,4 +59,15 @@ fun SearchBar(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable()
+fun SearchBarPreview() {
+    SearchBar(
+        modifier = Modifier.fillMaxWidth(),
+        hint = "Search",
+        onEvent = {},
+        homeState = HomeScreenState()
+    )
 }

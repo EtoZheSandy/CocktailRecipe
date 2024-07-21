@@ -15,16 +15,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import su.afk.cocktailrecipe.R
+import su.afk.cocktailrecipe.domain.model.Drink
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.component.HomeDrinkList
 import su.afk.cocktailrecipe.presentation.screen.homeScreen.component.SearchBar
 
 @Composable
 fun ScreenHome(
-    navController: NavController,
-    viewModel: HomeListViewModel,
+    onNavigateToScreen: (String) -> Unit,
+    viewModel: HomeViewModel,
+) {
+    ScreenView(
+        state = viewModel.homeState,
+        onNavigateToScreen = onNavigateToScreen,
+        onEvent = viewModel::onEvent,
+    )
+}
+
+@Composable
+fun ScreenView(
+    onNavigateToScreen: (String) -> Unit = {},
+    state: HomeScreenState = HomeScreenState(),
+    onEvent: (HomeScreenEvent) -> Unit = {},
 ) {
     Surface(
         color = MaterialTheme.colorScheme.secondaryContainer,
@@ -47,15 +62,33 @@ fun ScreenHome(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    viewModel = viewModel
-                ) {
-                    viewModel.searchDrinkName(it)
-                }
+                    onEvent = onEvent,
+                    homeState = state
+                )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                HomeDrinkList(navController = navController, viewModel = viewModel)
+                HomeDrinkList(onNavigateToScreen = onNavigateToScreen, state = state, onEvent = onEvent)
             }
         }
     }
 }
 
+@Preview()
+@Composable
+fun ScreenHomePreview() {
+    ScreenView(
+        onNavigateToScreen = {},
+        state = HomeScreenState(
+            cocktailList = listOf(
+            Drink(1, "Pina Colada", ""),
+            Drink(2, "Pina Colada", ""),
+            Drink(3, "Pina Colada", ""),
+            Drink(4, "Pina Colada", ""),
+            Drink(5, "Pina Colada", ""),
+            Drink(6, "Pina Colada", ""),
+            Drink(7, "Pina Colada", ""),
+            )
+        ),
+        onEvent = {}
+    )
+}

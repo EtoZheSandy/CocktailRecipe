@@ -13,18 +13,18 @@ import su.afk.cocktailrecipe.util.Resource
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeListViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val repository: NetworkDrink,
 ) : ViewModel() {
 
-    var homeState by mutableStateOf(HomeState())
+    var homeState by mutableStateOf(HomeScreenState())
         private set
 
     init {
         loadCocktailPaginated()
     }
 
-    fun loadCocktailPaginated() {
+    private fun loadCocktailPaginated() {
         homeState = homeState.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = repository.getDrinkHome()) {
@@ -45,11 +45,18 @@ class HomeListViewModel @Inject constructor(
         }
     }
 
-    fun setSearchText(newText: String) {
-        homeState = homeState.copy(searchText = newText)
+    fun onEvent(event: HomeScreenEvent) {
+        when (event) {
+            is HomeScreenEvent.Search -> {
+                homeState = homeState.copy(searchInput = event.query)
+                searchDrinkName(event.query)
+            }
+
+            is HomeScreenEvent.Retry -> loadCocktailPaginated()
+        }
     }
 
-    fun searchDrinkName(query: String) {
+    private fun searchDrinkName(query: String) {
         viewModelScope.launch {
             searchOnline(query)
         }
