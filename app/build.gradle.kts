@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.compose)
     // для запуска на тестовом устройсте они не нужны
 //    alias(libs.plugins.crashlytics)
 //    alias(libs.plugins.googleGmsGoogleServices)
@@ -85,7 +86,7 @@ dependencies {
 
     //Dagger - Hilt
     implementation (libs.hilt.android)
-    kapt (libs.hilt.android.compiler)
+    ksp (libs.hilt.android.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
 
     // Для вычисления цвета картинки
@@ -93,7 +94,7 @@ dependencies {
 
     // Room
     implementation (libs.androidx.room.ktx)
-    kapt (libs.androidx.room.compiler)
+    ksp (libs.androidx.room.compiler)
 
     // для запуска на тестовом устройсте они не нужны
     // Import the BoM for the Firebase platform
